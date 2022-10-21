@@ -17,6 +17,8 @@ public class AdvancedEditorManager : ModuleRules
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
+
+				System.IO.Path.GetFullPath(Target.RelativeEnginePath) + "Source/Editor/Blutility/Private"
 				// ... add other private include paths required here ...
 			}
 			);
@@ -25,7 +27,7 @@ public class AdvancedEditorManager : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core", "Blutility"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

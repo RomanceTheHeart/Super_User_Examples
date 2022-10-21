@@ -17,8 +17,8 @@
 	"Modules": [
 		{
 			"Name": "AdvancedEditorManager",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"Type": "Editor",
+			"LoadingPhase": "preDefault"
 		}
 	]
 }
