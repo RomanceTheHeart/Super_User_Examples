@@ -1,0 +1,11 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-RiderShaderInfo.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfo\RiderShaderInfo.cpp.obj"
+"D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfo\Default.rc2.res"
+/OUT:"D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfo\UnrealEditor-RiderShaderInfo.lib"
