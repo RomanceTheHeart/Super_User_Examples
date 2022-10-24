@@ -2,14 +2,15 @@
 
 
 #include "AssetActions/QuickAssetManager.h"
-
+#include "EditorUtilityLibrary.h"
+#include "EditorAssetLibrary.h"
+#include "DebugHeader.h"
 
 
 void UQuickAssetManager::TestFunction()
 {
 	
-	if(GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1,30.0,FColor::Black,TEXT("This Works!"));
-	}
+Print("Test: Function-Static-Test.",FColor::Magenta);
+	PrintLog("This message will print to the console.");
+	
 }
