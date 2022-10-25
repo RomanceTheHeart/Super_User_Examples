@@ -8,7 +8,7 @@ void Print(const FString& message, const FColor& color)
 	}
 }
 
-void PrintLog(const FString&message)
+void PrintLog(const FString &message)
 {
 	UE_LOG(LogTemp,Warning,TEXT("%s"),*message);
 
