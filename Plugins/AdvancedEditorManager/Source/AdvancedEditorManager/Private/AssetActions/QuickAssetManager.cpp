@@ -2,15 +2,48 @@
 
 
 #include "AssetActions/QuickAssetManager.h"
+
+#include "AssetSelection.h"
 #include "EditorUtilityLibrary.h"
 #include "EditorAssetLibrary.h"
 #include "DebugHeader.h"
+#include "Components/DecalComponent.h"
 
 
-void UQuickAssetManager::TestFunction()
+void UQuickAssetManager::DubplicateAssets(int32 NumberOfDuplicates)
 {
 	
-Print("Test: Function-Static-Test.",FColor::Magenta);
-	PrintLog("This message will print to the console.");
+
+	if (NumberOfDuplicates < 0)
+	{
+		Print("Please Enter a Valid Number",FColor::Blue);
+		return;
+	}	
+	
+	TArray<FAssetData> SelectedAssetData = UEditorUtilityLibrary::GetSelectedAssetData();
+	uint32 counter{0};
+	for(const FAssetData& AssetData:SelectedAssetData)
+	{
+		 
+		for(int32 i=0; NumberOfDuplicates; i++)
+		{
+			
+			const FString SourceAssetPath = AssetData.ObjectPath.ToString();
+			const FString NewDuplicatedAssetName = AssetData.AssetName.ToString() + TEXT("_")+ FString::FromInt(i);
+			const FString NewPath = FPaths::Combine(AssetData.PackagePath.ToString(),NewDuplicatedAssetName);
+
+
+			if(UEditorAssetLibrary::DuplicateAsset(SourceAssetPath,NewPath))
+			{
+
+				UEditorAssetLibrary::SaveAsset(NewPath,false);
+				//Print(("%s",SelectedAssetData),FColor::Emerald);
+				
+			}
+			break;
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *SourceAssetPath);
+		}
+	}
+	
 	
 }
