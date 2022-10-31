@@ -7,16 +7,19 @@
 #include "EditorUtilityLibrary.h"
 #include "EditorAssetLibrary.h"
 #include "DebugHeader.h"
-#include "Components/DecalComponent.h"
+#include "Algo/Count.h"
 
 
-void UQuickAssetManager::DubplicateAssets(int32 NumberOfDuplicates)
+void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
 {
 	
 
 	if (NumberOfDuplicates < 0)
 	{
-		Print("Please Enter a Valid Number",FColor::Blue);
+		//Print("Please Enter a Valid Number",FColor::Blue);
+
+		
+		ShowDialog(EAppMsgType::Ok,TEXT("Please enter a valid Number."));
 		return;
 	}	
 
@@ -27,7 +30,7 @@ void UQuickAssetManager::DubplicateAssets(int32 NumberOfDuplicates)
 	for(const FAssetData& AssetData:SelectedAssetData)
 	{
 		 //iterate again to create a new file name and path location.
-		for(int32 i=0; NumberOfDuplicates; i++)
+		for(uint32 i=0; counter < NumberOfDuplicates; ++i)
 		{
 			
 			const FString SourceAssetPath = AssetData.ObjectPath.ToString();
@@ -39,12 +42,19 @@ void UQuickAssetManager::DubplicateAssets(int32 NumberOfDuplicates)
 			{
 				
 				UEditorAssetLibrary::SaveAsset(NewPath,false);
+				++counter;
 				//Print(("%s",SelectedAssetData),FColor::Emerald);
 				
 			}
-			break;
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *SourceAssetPath);
+			
+			
 		}
+		if(counter>0)
+		{
+			//add debug message;
+			ShowNotificationInfo("Successfully Duplicated " + FString::FromInt(counter) + " files.");
+		}
+	
 	}
 	
 	
