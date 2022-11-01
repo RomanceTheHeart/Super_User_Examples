@@ -10,42 +10,36 @@
 #include "Components/DecalComponent.h"
 
 
-void UQuickAssetManager::DubplicateAssets(int32 NumberOfDuplicates)
+void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
 {
-	
-
-	if (NumberOfDuplicates < 0)
+	NumberOfDuplicates = {0};
+	if (NumberOfDuplicates <= 0)
 	{
-		Print("Please Enter a Valid Number",FColor::Blue);
+		Print("Please Enter a Valid Number", FColor::Blue);
 		return;
-	}	
+	}
 
 	// Create an AssetData array. 
 	TArray<FAssetData> SelectedAssetData = UEditorUtilityLibrary::GetSelectedAssetData();
 	uint32 counter{0};
 	// iterate through it.
-	for(const FAssetData& AssetData:SelectedAssetData)
+	for (const FAssetData& AssetData : SelectedAssetData)
 	{
-		 //iterate again to create a new file name and path location.
-		for(int32 i=0; NumberOfDuplicates; i++)
+		//iterate again to create a new file name and path location.
+		for (uint32 i = 0; counter < NumberOfDuplicates; ++i)
 		{
-			
 			const FString SourceAssetPath = AssetData.ObjectPath.ToString();
-			const FString NewDuplicatedAssetName = AssetData.AssetName.ToString() + TEXT("_")+ FString::FromInt(i);
-			const FString NewPath = FPaths::Combine(AssetData.PackagePath.ToString(),NewDuplicatedAssetName);
+			const FString NewDuplicatedAssetName = AssetData.AssetName.ToString() + TEXT("_") + FString::FromInt(i);
+			const FString NewPath = FPaths::Combine(AssetData.PackagePath.ToString(), NewDuplicatedAssetName);
 
 			//check for valid path. if valid duplicate path and append a new name to each asset. 
-			if(UEditorAssetLibrary::DuplicateAsset(SourceAssetPath,NewPath))
+			if (UEditorAssetLibrary::DuplicateAsset(SourceAssetPath, NewPath))
 			{
-				
-				UEditorAssetLibrary::SaveAsset(NewPath,false);
+				UEditorAssetLibrary::SaveAsset(NewPath, false);
 				//Print(("%s",SelectedAssetData),FColor::Emerald);
-				
 			}
-			break;
+
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *SourceAssetPath);
 		}
 	}
-	
-	
 }

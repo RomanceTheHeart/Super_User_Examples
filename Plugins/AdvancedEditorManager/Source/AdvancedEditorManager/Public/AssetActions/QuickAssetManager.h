@@ -16,6 +16,6 @@ class ADVANCEDEDITORMANAGER_API UQuickAssetManager : public UAssetActionUtility
 
 	public: 
 	UFUNCTION(CallInEditor)
-	void DubplicateAssets(int32 NumberOfDuplicates);
+	void DuplicateAssets(uint64 NumberOfDuplicates);
 	
 };

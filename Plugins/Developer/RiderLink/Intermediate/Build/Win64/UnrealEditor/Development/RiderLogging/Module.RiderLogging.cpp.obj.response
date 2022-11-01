@@ -1,29 +1,29 @@
-D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp
+E:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp
 /I .
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLogging\Private
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLogging\Private
 /I Runtime
 /I Runtime\TraceLog\Public
 /I Runtime\Core\Public
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\util
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_gen_cpp\src
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\ordered-map\include
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\optional\tl
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\variant\include
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\string-view-lite\include
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\CTPL\include
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\Library
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\RdEditorProtocol
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLink\Public
-/I D:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderBlueprint\Public
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\util
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\src\rd_gen_cpp\src
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\ordered-map\include
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\optional\tl
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\variant\include
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\string-view-lite\include
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RD\thirdparty\CTPL\include
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\Library
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\RdEditorProtocol
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderLink\Public
+/I E:\Super_User_Examples\Plugins\Developer\RiderLink\Source\RiderBlueprint\Public
 /I ThirdParty\mimalloc\include
 /I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
@@ -31,9 +31,9 @@ D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\Unre
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"
-/FI"D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Definitions.h"
-/Fo"D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
-/sourceDependencies D:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.json
+/FI"E:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Definitions.h"
+/Fo"E:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
+/sourceDependencies E:\Super_User_Examples\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.json
 /Zc:inline
 /nologo
 /Oi
