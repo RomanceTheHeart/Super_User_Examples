@@ -39,7 +39,7 @@ inline EAppReturnType::Type ShowDialog(EAppMsgType::Type m_type, const FString &
 void ShowNotificationInfo(const FString &message)
 {
 	//This function adds a notification message to the screen.
-	//This function needs further research.
+	//This object is declared as a struct. It's constructor takes in an info structure as a parameter.
 	
 	FNotificationInfo NotifyInfo(FText::FromString(message));
 	NotifyInfo.bUseLargeFont = true;
