@@ -12,16 +12,18 @@
 
 void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
 {
-	
+	//Set variable for safety reasons.
+	//NumberOfDuplicates ={0};
 
-	if (NumberOfDuplicates < 0)
+	if (NumberOfDuplicates <= 0)
 	{
-		//Print("Please Enter a Valid Number",FColor::Blue);
+		Print("Please Enter a Valid Number",FColor::Blue);
 
 		
 		ShowDialog(EAppMsgType::Ok,TEXT("Please enter a valid Number."));
 		return;
-	}	
+	}
+	
 
 	// Create an AssetData array. 
 	TArray<FAssetData> SelectedAssetData = UEditorUtilityLibrary::GetSelectedAssetData();
