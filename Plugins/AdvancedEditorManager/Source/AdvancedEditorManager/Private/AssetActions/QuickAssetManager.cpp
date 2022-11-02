@@ -7,6 +7,7 @@
 #include "EditorUtilityLibrary.h"
 #include "EditorAssetLibrary.h"
 #include "DebugHeader.h"
+#include "Materials/MaterialInstanceConstant.h"
 
 
 void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
@@ -63,17 +64,24 @@ void UQuickAssetManager::RenamePrefix()
 		{
 			continue;
 		}
-		FString* prefixfound = PrefixMap.Find(selectedobject->GetClass()); //Why is this a pointer?? 
+		FString* prefixfound = PrefixMap.Find(selectedobject->GetClass()); //The "Find" operation returns a pointer. 
 		if(!prefixfound||prefixfound->IsEmpty())
 		{
 			Print(TEXT("Failed to find Prefix for Class.")+selectedobject->GetClass()->GetName(),FColor::Red);
 			continue;
 		}
+		//create a name when object is right clicked. 
 		FString oldname = selectedobject->GetName();
 		if(oldname.StartsWith(*prefixfound))
 		{
 			Print(oldname+TEXT(" Already has prefix added."), FColor::Red);
 			continue;
+		}
+		if(selectedobject->IsA<UMaterialInstanceConstant>())
+		{
+			//remove the prefix and suffix from a material instance. 
+			oldname.RemoveFromStart(TEXT("M_"));
+			oldname.RemoveFromEnd(TEXT("_Inst"));
 		}
 		const FString newname = *prefixfound + oldname;
 
@@ -86,4 +94,16 @@ void UQuickAssetManager::RenamePrefix()
 	{
 		ShowNotificationInfo(TEXT("Successfully renamed " + FString::FromInt(counter)+ " Assets"));
 	}
+
+	//create an array to get selected assets
+	//create another array to store the unused assets
+	//loop through the assets that were found.
+	//hint findpackagerefferences
+	//store the elements in a temperary array
+	//add the assets to the temp array
+	//check assets if they are being used
+	// print message if they are being used.
+	//if we get past this check.
+	//include header files objecttools.h to access better delete tools
+	//delete assets. This action may need to include a module. 
 }

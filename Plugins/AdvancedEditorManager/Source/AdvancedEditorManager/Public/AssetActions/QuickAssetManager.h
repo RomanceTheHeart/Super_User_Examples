@@ -27,5 +27,8 @@ private:
 
 	UFUNCTION(CallInEditor)
 	void RenamePrefix();
+
+	//Create a function
+	//deleteunsedassets()
 	
 };
