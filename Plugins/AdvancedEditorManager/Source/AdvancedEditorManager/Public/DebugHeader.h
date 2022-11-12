@@ -9,7 +9,7 @@ inline void Print(const FString& message, const FColor& color)
 {
 	if(GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1,30.0,FColor::Black,TEXT("This Works!"));
+		GEngine->AddOnScreenDebugMessage(-1,30.0,color,message);
 	}
 }
 
