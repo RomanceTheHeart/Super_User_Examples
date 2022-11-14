@@ -15,31 +15,40 @@ void AMiniProjects::BeginPlay()
 
 	FTransform SpawnLocation;
 
-	const int32 blockindex{2};
-	const int32 BlockNumber{blockindex * blockindex};
-	float OffSetAmount{300.0};
+	constexpr int32 blockindex{2};
+	constexpr int32 BlockNumber{blockindex * blockindex};
+	float OffSetAmount{100.0};
 	float Z_OffsetAmount{0.0f};
 	//float worldtime = GetGameTimeSinceCreation();
 	FActorSpawnParameters SpawnParameters;
 
+	 float X_Offset;
+	float Y_Offset;
+	const float Z_Offset = {((blockindex % BlockNumber) * Z_OffsetAmount)};
+
+
 	for (int32 index{0}; index < BlockNumber * BlockNumber; index ++)
 	{
-		const float X_Offset{((index / BlockNumber) * OffSetAmount)};
-		const float Y_Offset = {((index % BlockNumber) * OffSetAmount)};
-		const float Z_Offset = {((index % BlockNumber) * Z_OffsetAmount)};
+		X_Offset = {((index / BlockNumber) * OffSetAmount)};
+		Y_Offset = {((index % BlockNumber) * OffSetAmount)};
+		
 		const FVector newspawnvector = FVector(X_Offset, Y_Offset, Z_Offset);
 
 		if (GetWorld() != nullptr)
+		{
 			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector, FRotator(0, 0, 0),
-			                                                SpawnParameters);
-		if (index <= FMath::Pow(BlockNumber, 2))
-		{
-		
-			Z_OffsetAmount += 10;
-			OffSetAmount += 10;
+															SpawnParameters);
 		}
-		for (int32 index_j{BlockNumber}; index_j < (BlockNumber); index_j ++)
+
+		
+	}
+	
+	 if  (blockindex >= BlockNumber)
+	{
+		for (int32 index_j{BlockNumber}; index_j < BlockNumber * blockindex; index_j ++)
 		{
+			Z_OffsetAmount = 100;
+			OffSetAmount += .5;
 			const FVector newspawnvector_2 = FVector(X_Offset, Y_Offset, Z_Offset);
 			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector_2,
 															FRotator(0, 0, 0),
@@ -49,11 +58,11 @@ void AMiniProjects::BeginPlay()
 	}
 }
 
-void AMiniProjects::DestroyActor()
-{
-	if (SpawnedActor != nullptr)
+	void AMiniProjects::DestroyActor()
 	{
-		Print("Actor Destroyed!!", FColor::Red);
-		SpawnedActor->Destroy();
+		if (SpawnedActor != nullptr)
+		{
+			Print("Actor Destroyed!!", FColor::Red);
+			SpawnedActor->Destroy();
+		}
 	}
-}
