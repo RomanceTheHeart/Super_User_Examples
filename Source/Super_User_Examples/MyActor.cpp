@@ -20,6 +20,10 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Mesh_1->SetSimulatePhysics(true);
+
+	
+
 }
 
 // Called every frame

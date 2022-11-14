@@ -10,22 +10,36 @@
 void AMiniProjects::BeginPlay()
 {
 	Super::BeginPlay();
-	Print("Actor Spawned.",FColor::Blue);
+	Print("Actor Spawned.", FColor::Blue);
 
 
 	FTransform SpawnLocation;
 
-	SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(),SpawnLocation);
+	const int32 blockindex{8};
+	const int32 BlockNumber{blockindex * blockindex};
+	const float OffSetAmount{100.0};
+	float Z_OffsetAmount{3.5};
+	//float worldtime = GetGameTimeSinceCreation();
+	FActorSpawnParameters SpawnParameters;
+	for (int32 index{0}; index < BlockNumber; index ++)
+	{
+		const float X_Offset{((index / BlockNumber) * OffSetAmount)};
+		const float Y_Offset = {((index % BlockNumber) * OffSetAmount)};
+		const float Z_Offset = {((index % BlockNumber) * Z_OffsetAmount)};
+		const FVector newspawnvector = FVector(X_Offset, Y_Offset, Z_Offset);
+		if(BlockNumber/blockindex <= blockindex){Z_OffsetAmount = 100.0f;}
+		if (GetWorld() != nullptr)
+			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector, FRotator(0, 0, 0),
+			                                                SpawnParameters);
+	}
 
-	FTimerHandle DestroyTimer;
-	GetWorldTimerManager().SetTimer(DestroyTimer,this,&AMiniProjects::DestroyActor,10);
 
+	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AMiniProjects::DestroyActor, 10);
 }
 
 void AMiniProjects::DestroyActor()
 {
-		
-	if(SpawnedActor != nullptr)
+	if (SpawnedActor != nullptr)
 	{
 		Print("Actor Destroyed!!", FColor::Red);
 		SpawnedActor->Destroy();

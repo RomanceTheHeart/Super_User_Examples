@@ -31,7 +31,8 @@ class SUPER_USER_EXAMPLES_API AMiniProjects : public AGameModeBase
 {
 	GENERATED_BODY()
 
-	
+private:
+	FTimerHandle DestroyTimer;
 public:
 	UPROPERTY()
 	class AMyActor* SpawnedActor;
