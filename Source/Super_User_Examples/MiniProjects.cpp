@@ -16,53 +16,60 @@ void AMiniProjects::BeginPlay()
 	FTransform SpawnLocation;
 
 	constexpr int32 blockindex{2};
+	int32 blockcounter{0};
 	constexpr int32 BlockNumber{blockindex * blockindex};
-	float OffSetAmount{100.0};
+	float OffSetAmount{0};
 	float Z_OffsetAmount{0.0f};
 	//float worldtime = GetGameTimeSinceCreation();
 	FActorSpawnParameters SpawnParameters;
 
-	 float X_Offset;
+	float X_Offset;
 	float Y_Offset;
-	const float Z_Offset = {((blockindex % BlockNumber) * Z_OffsetAmount)};
+	float Z_Offset;
 
 
-	for (int32 index{0}; index < BlockNumber * BlockNumber; index ++)
+	for (int32 index{0}; index < FMath::Pow(BlockNumber, 2); index ++)
 	{
+		OffSetAmount = {150};
 		X_Offset = {((index / BlockNumber) * OffSetAmount)};
 		Y_Offset = {((index % BlockNumber) * OffSetAmount)};
-		
+		Z_Offset = {((blockindex % BlockNumber) * Z_OffsetAmount)};
+
 		const FVector newspawnvector = FVector(X_Offset, Y_Offset, Z_Offset);
 
 		if (GetWorld() != nullptr)
 		{
 			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector, FRotator(0, 0, 0),
-															SpawnParameters);
+			                                                SpawnParameters);
 		}
+		blockcounter++;
+	}
 
-		
-	}
-	
-	 if  (blockindex >= BlockNumber)
+	for (int32 index_j{0}; index_j <= FMath::Pow(BlockNumber, 2); index_j ++)
 	{
-		for (int32 index_j{BlockNumber}; index_j < BlockNumber * blockindex; index_j ++)
-		{
-			Z_OffsetAmount = 100;
-			OffSetAmount += .5;
-			const FVector newspawnvector_2 = FVector(X_Offset, Y_Offset, Z_Offset);
-			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector_2,
-															FRotator(0, 0, 0),
-															SpawnParameters);
-		}
-		GetWorldTimerManager().SetTimer(DestroyTimer, this, &AMiniProjects::DestroyActor, 10);
+		Z_OffsetAmount = 50;
+		OffSetAmount = 140;
+		X_Offset = {((index_j / BlockNumber) * OffSetAmount)};
+		Y_Offset = {((index_j % BlockNumber) * OffSetAmount)};
+		Z_Offset = {((blockindex % BlockNumber) * Z_OffsetAmount)};
+		const FVector newspawnvector_2 = FVector(X_Offset, Y_Offset, Z_Offset);
+		SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector_2,
+		                                                FRotator(0, 0, 0),
+		                                                SpawnParameters);
+		blockcounter++;
 	}
+
+	Print(FString::FromInt(blockcounter), FColor::Red);
+
+
+	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AMiniProjects::DestroyActor, 10);
 }
 
-	void AMiniProjects::DestroyActor()
+void AMiniProjects::DestroyActor()
+{
+	if (SpawnedActor != nullptr)
 	{
-		if (SpawnedActor != nullptr)
-		{
-			Print("Actor Destroyed!!", FColor::Red);
-			SpawnedActor->Destroy();
-		}
+		Print("Actor Destroyed!!", FColor::Red);
+		SpawnedActor->Destroy();
 	}
+}
