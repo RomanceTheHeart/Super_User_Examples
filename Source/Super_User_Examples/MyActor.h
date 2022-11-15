@@ -11,19 +11,24 @@ class SUPER_USER_EXAMPLES_API AMyActor : public AActor
 {
 	GENERATED_BODY()
 
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AMyActor();
+	UPROPERTY()
+	UMaterialInterface* Material;
 
 	UPROPERTY()
-	 UStaticMeshComponent* Mesh_1; 
+	UMaterialInstanceDynamic* Dissolve_Material;
+
+	UPROPERTY()
+	UStaticMeshComponent* Mesh_1;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	AActor* GetActor(){return this;}
-
+	AActor* GetActor() { return this; }
 };

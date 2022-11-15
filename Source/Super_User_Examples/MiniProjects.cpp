@@ -2,7 +2,6 @@
 
 
 #include "MiniProjects.h"
-
 #include "MyActor.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -10,14 +9,14 @@
 void AMiniProjects::BeginPlay()
 {
 	Super::BeginPlay();
-	Print("Actor Spawned.", FColor::Blue);
+
 
 
 	FTransform SpawnLocation;
 
 	constexpr int32 Blockindex{2};
 	int32 Blockcounter{0};
-	constexpr int32 BlockNumber{Blockindex * Blockindex};
+	 int32 BlockNumber = {static_cast<int32>(FMath::Pow(Blockindex,2))};
 	float OffSetAmount{0};
 	float Z_OffsetAmount{0.0f};
 	//float worldtime = GetGameTimeSinceCreation();
@@ -30,11 +29,11 @@ void AMiniProjects::BeginPlay()
 
 	for (int32 index{0}; index < FMath::Pow(BlockNumber, 2); index ++)
 	{
-		OffSetAmount = {100};
+		OffSetAmount = {150};
 		X_Offset = {((index / BlockNumber) * OffSetAmount)};
 		Y_Offset = {((index % BlockNumber) * OffSetAmount)};
 		Z_Offset = {((Blockindex % BlockNumber) * Z_OffsetAmount)};
-
+		Z_OffsetAmount =300;
 		const FVector newspawnvector = FVector(X_Offset, Y_Offset, Z_Offset);
 
 		if (GetWorld() != nullptr)
@@ -54,7 +53,7 @@ void AMiniProjects::BeginPlay()
 		X_Offset = {((index_j / BlockNumber) * OffSetAmount)};
 		Z_Offset = {((Blockindex % BlockNumber) * Z_OffsetAmount)};
 
-		//This Works. Just Adjust the scale to form a pyramid. 
+		//This Works. Just Adjust the scaler-Function to form a pyramid. 
 
 		const FVector newspawnvector_2 = FVector(X_Offset, Y_Offset, Z_Offset);
 		SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector_2,
@@ -65,6 +64,7 @@ void AMiniProjects::BeginPlay()
 	}
 	Print("This is index_j: ", FColor::Red);
 	Print(FString::FromInt(Blockcounter), FColor::Red);
+	Print("Actor's Spawned.", FColor::Blue);
 
 
 	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AMiniProjects::DestroyActor, 10);

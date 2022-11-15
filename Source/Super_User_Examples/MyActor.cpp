@@ -3,6 +3,7 @@
 
 #include "MyActor.h"
 #include "Components/StaticMeshComponent.h"
+#include "Materials/MaterialInstanceConstant.h"
 
 // Sets default values
 AMyActor::AMyActor()
@@ -13,14 +14,30 @@ AMyActor::AMyActor()
 	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
 	if(MeshAsset.Object != nullptr){Mesh_1->SetStaticMesh(MeshAsset.Object);}
 
+	
+	auto MaterialAsset = ConstructorHelpers::FObjectFinder<UMaterialInstanceConstant>(TEXT("MaterialInstanceConstant'/Game/Material_Examples/Dissolve_Material_Inst.Dissolve_Material_Inst'"));
+	if(MaterialAsset.Object != nullptr){Mesh_1->SetMaterial(0,Dissolve_Material);}
+
+
+	
 }
 
 // Called when the game starts or when spawned
 void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	Material = Mesh_1->GetMaterial(1);
+	Dissolve_Material=	UMaterialInstanceDynamic::Create(Material,this);
+	if(Dissolve_Material != nullptr)
+	{
+		Mesh_1->SetMaterial(0,Dissolve_Material);
+		
+		Mesh_1->SetSimulatePhysics(true);
+	}
+	
 
-	//Mesh_1->SetSimulatePhysics(true);
+
 
 	
 
