@@ -15,14 +15,10 @@ AMyActor::AMyActor()
 		TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
 	if (MeshAsset.Object != nullptr) { Mesh_1->SetStaticMesh(MeshAsset.Object); }
 
-	Material = CreateDefaultSubobject<UMaterialInterface>(TEXT("Default_Material"));
-	auto MaterialAsset = ConstructorHelpers::FObjectFinder<UMaterialInstanceConstant>(
-		TEXT("MaterialInstanceConstant'/Game/Material_Examples/M_MasterRockMaterial_Inst.M_MasterRockMaterial_Inst'"));
-	if (MaterialAsset.Succeeded())
-	{
-		//Mesh_1->SetMaterial(1, Material);
-		Mesh_1->SetMaterialByName("Dissolve_Material_Inst",Material);
-	}
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> asset(TEXT("MaterialInstanceConstant'/Game/Material_Examples/M_MasterRockMaterial_Inst.M_MasterRockMaterial_Inst'"));
+	Material = asset.Object;
+	Mesh_1->SetMaterial(0,Material);
 }
 
 // Called when the game starts or when spawned
@@ -30,14 +26,14 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*Material = Mesh_1->GetMaterial(1);
+	Material = Mesh_1->GetMaterial(1);
 	Dissolve_Material=	UMaterialInstanceDynamic::Create(Material,this);
 	if(Dissolve_Material != nullptr)
 	{
 		Mesh_1->SetMaterial(0,Dissolve_Material);
 		
 		Mesh_1->SetSimulatePhysics(true);
-	}*/
+	}
 }
 
 // Called every frame
