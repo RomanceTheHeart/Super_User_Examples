@@ -8,45 +8,40 @@
 // Sets default values
 AMyActor::AMyActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Mesh_1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootMeshComonent"));
-	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-	if(MeshAsset.Object != nullptr){Mesh_1->SetStaticMesh(MeshAsset.Object);}
+	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(
+		TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
+	if (MeshAsset.Object != nullptr) { Mesh_1->SetStaticMesh(MeshAsset.Object); }
 
-	
-	auto MaterialAsset = ConstructorHelpers::FObjectFinder<UMaterialInstanceConstant>(TEXT("MaterialInstanceConstant'/Game/Material_Examples/Dissolve_Material_Inst.Dissolve_Material_Inst'"));
-	if(MaterialAsset.Object != nullptr){Mesh_1->SetMaterial(0,Dissolve_Material);}
-
-
-	
+	Material = CreateDefaultSubobject<UMaterialInterface>(TEXT("Default_Material"));
+	auto MaterialAsset = ConstructorHelpers::FObjectFinder<UMaterialInstanceConstant>(
+		TEXT("MaterialInstanceConstant'/Game/Material_Examples/M_MasterRockMaterial_Inst.M_MasterRockMaterial_Inst'"));
+	if (MaterialAsset.Succeeded())
+	{
+		//Mesh_1->SetMaterial(1, Material);
+		Mesh_1->SetMaterialByName("Dissolve_Material_Inst",Material);
+	}
 }
 
 // Called when the game starts or when spawned
 void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	Material = Mesh_1->GetMaterial(1);
+
+	/*Material = Mesh_1->GetMaterial(1);
 	Dissolve_Material=	UMaterialInstanceDynamic::Create(Material,this);
 	if(Dissolve_Material != nullptr)
 	{
 		Mesh_1->SetMaterial(0,Dissolve_Material);
 		
 		Mesh_1->SetSimulatePhysics(true);
-	}
-	
-
-
-
-	
-
+	}*/
 }
 
 // Called every frame
 void AMyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-
