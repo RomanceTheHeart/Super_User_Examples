@@ -15,25 +15,25 @@ void AMiniProjects::BeginPlay()
 
 	FTransform SpawnLocation;
 
-	constexpr int32 blockindex{2};
-	int32 blockcounter{0};
-	constexpr int32 BlockNumber{blockindex * blockindex};
+	constexpr int32 Blockindex{2};
+	int32 Blockcounter{0};
+	constexpr int32 BlockNumber{Blockindex * Blockindex};
 	float OffSetAmount{0};
 	float Z_OffsetAmount{0.0f};
 	//float worldtime = GetGameTimeSinceCreation();
 	FActorSpawnParameters SpawnParameters;
 
-	float X_Offset;
-	float Y_Offset;
-	float Z_Offset;
+	float X_Offset{0};
+	float Y_Offset{0};
+	float Z_Offset{0};
 
 
 	for (int32 index{0}; index < FMath::Pow(BlockNumber, 2); index ++)
 	{
-		OffSetAmount = {150};
+		OffSetAmount = {100};
 		X_Offset = {((index / BlockNumber) * OffSetAmount)};
 		Y_Offset = {((index % BlockNumber) * OffSetAmount)};
-		Z_Offset = {((blockindex % BlockNumber) * Z_OffsetAmount)};
+		Z_Offset = {((Blockindex % BlockNumber) * Z_OffsetAmount)};
 
 		const FVector newspawnvector = FVector(X_Offset, Y_Offset, Z_Offset);
 
@@ -42,24 +42,29 @@ void AMiniProjects::BeginPlay()
 			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector, FRotator(0, 0, 0),
 			                                                SpawnParameters);
 		}
-		blockcounter++;
+		Blockcounter++;
 	}
 
-	for (int32 index_j{0}; index_j <= FMath::Pow(BlockNumber, 2); index_j ++)
+	for (int32 index_j{Blockcounter}; index_j >= 0; index_j --)
 	{
-		Z_OffsetAmount = 50;
-		OffSetAmount = 140;
-		X_Offset = {((index_j / BlockNumber) * OffSetAmount)};
+		Z_OffsetAmount = 1900;
+		Z_OffsetAmount -= (Blockcounter-index_j) * 50;
+		OffSetAmount += 1;
 		Y_Offset = {((index_j % BlockNumber) * OffSetAmount)};
-		Z_Offset = {((blockindex % BlockNumber) * Z_OffsetAmount)};
+		X_Offset = {((index_j / BlockNumber) * OffSetAmount)};
+		Z_Offset = {((Blockindex % BlockNumber) * Z_OffsetAmount)};
+
+		//This Works. Just Adjust the scale to form a pyramid. 
+
 		const FVector newspawnvector_2 = FVector(X_Offset, Y_Offset, Z_Offset);
 		SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector_2,
 		                                                FRotator(0, 0, 0),
 		                                                SpawnParameters);
-		blockcounter++;
+		
+	
 	}
-
-	Print(FString::FromInt(blockcounter), FColor::Red);
+	Print("This is index_j: ", FColor::Red);
+	Print(FString::FromInt(Blockcounter), FColor::Red);
 
 
 	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AMiniProjects::DestroyActor, 10);
