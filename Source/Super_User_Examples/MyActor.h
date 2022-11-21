@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "MyActor.generated.h"
 
@@ -23,6 +24,8 @@ public:
 
 	UPROPERTY()
 	UStaticMeshComponent* Mesh_1;
+	UPROPERTY()
+	USphereComponent* Overlap_Area; 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
