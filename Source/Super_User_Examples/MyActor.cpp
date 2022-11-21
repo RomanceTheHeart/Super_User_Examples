@@ -54,13 +54,19 @@ void AMyActor::BeginPlay()
 		//Mesh_1->SetMaterial(0,Dissolve_Material);
 	}
 
-	/*TArray<AActor*> OverlappingActors;
-	Overlap_Area->GetOverlappingActors(OverlappingActors, UStaticMeshComponent::StaticClass());
+	TArray<AActor*> OverlappingActors;
+	Overlap_Area->GetOverlappingActors(OverlappingActors,UStaticMeshComponent::StaticClass());
 	for(AActor* actor:OverlappingActors)
 	{
-		OverlappingActors.Add(actor);
-		Print("Actor Hit!",FColor::Green);
-	}*/
+		if(actor != nullptr)
+		{
+			OverlappingActors.AddUnique(actor);
+
+			
+		
+			GEngine->AddOnScreenDebugMessage(-1,30.0,FColor::Cyan,*actor->GetActorLabel());
+		}
+	}
 }
 
 // Called every frame
