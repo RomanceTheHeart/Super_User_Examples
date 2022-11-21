@@ -12,7 +12,15 @@ class SUPER_USER_EXAMPLES_API AMyActor : public AActor
 {
 	GENERATED_BODY()
 
-
+private:
+	UPROPERTY()
+	USphereComponent* Overlap_Area;
+	UPROPERTY()
+	UStaticMeshComponent* Mesh_1;
+	FVector Spawnlocation;
+	FVector DestructionLocation;
+	UPROPERTY(Transient)
+	TArray<UPrimitiveComponent*> OverlappingActors;
 public:
 	// Sets default values for this actor's properties
 	AMyActor();
@@ -21,14 +29,15 @@ public:
 
 	UPROPERTY()
 	UMaterialInstanceDynamic* Dissolve_Material;
+	FVector GetSpawnLocation() { return Spawnlocation; }
 
-	UPROPERTY()
-	UStaticMeshComponent* Mesh_1;
-	UPROPERTY()
-	USphereComponent* Overlap_Area; 
+
+	USphereComponent* GetRoot() { return Overlap_Area; }
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	//virtual void  NotifyHit(AActor* OtherActor) override;
+
 
 public:
 	// Called every frame

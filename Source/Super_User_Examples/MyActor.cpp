@@ -3,8 +3,20 @@
 
 #include "MyActor.h"
 
+#include <variant>
+
+#include "UObject/UObjectIterator.h"
+#include "EngineUtils.h"
+#include "Super_Config.h"
 #include "Components/StaticMeshComponent.h"
+#include "Elements/Interfaces/TypedElementObjectInterface.h"
+#include "Engine/EngineTypes.h"
+#include "Kismet/GameplayStatics.h"
+#include "Super_Config.h"
+#include "../../Plugins/Developer/RiderLink/Source/RD/thirdparty/clsocket/src/ActiveSocket.h"
+#include "Engine/StaticMeshActor.h"
 #include "Materials/MaterialInstanceConstant.h"
+#include "SceneQueries/SceneSnappingManager.h"
 
 // Sets default values
 AMyActor::AMyActor()
@@ -14,8 +26,9 @@ AMyActor::AMyActor()
 
 
 	Overlap_Area = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapComponent"));
-	Overlap_Area->SetSphereRadius(60);
-
+	Overlap_Area->SetSphereRadius(150);
+	Overlap_Area->SetRelativeLocation(FVector::ZeroVector);
+	Overlap_Area->SetRelativeRotation(FRotator::ZeroRotator);
 
 	SetRootComponent(Overlap_Area);
 
@@ -54,17 +67,16 @@ void AMyActor::BeginPlay()
 		//Mesh_1->SetMaterial(0,Dissolve_Material);
 	}
 
-	TArray<AActor*> OverlappingActors;
-	Overlap_Area->GetOverlappingActors(OverlappingActors,UStaticMeshComponent::StaticClass());
-	for(AActor* actor:OverlappingActors)
-	{
-		if(actor != nullptr)
-		{
-			OverlappingActors.AddUnique(actor);
 
-			
-		
-			GEngine->AddOnScreenDebugMessage(-1,30.0,FColor::Cyan,*actor->GetActorLabel());
+	//////////Get Objects Around Me //////////
+	if (this != nullptr)
+	{
+		for (TActorIterator<AStaticMeshActor> Itr(GetWorld()); Itr; ++Itr)
+		{
+			const AStaticMeshActor* component = Cast<AStaticMeshActor>(*Itr);
+			if (component != GetActor())
+
+				Print(component->GetName(), FColor::Purple);
 		}
 	}
 }
