@@ -36,11 +36,13 @@ void AMiniProjects::BeginPlay()
 		Z_Offset = {((Blockindex % BlockNumber) * Z_OffsetAmount)};
 		Z_OffsetAmount =300;
 		const FVector newspawnvector = FVector(X_Offset, Y_Offset, Z_Offset);
-
+			
 		if (GetWorld() != nullptr)
 		{
 			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector, FRotator(0, 0, 0),
-			                                                SpawnParameters);
+                                            SpawnParameters);
+			
+			SpawnedActor->SetSpawnLocation(newspawnvector+ SpawnedActor->GetActorLocation());
 		}
 		Blockcounter++;
 	}
@@ -60,7 +62,7 @@ void AMiniProjects::BeginPlay()
 		SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector_2,
 		                                                FRotator(0, 0, 0),
 		                                                SpawnParameters);
-		
+		SpawnedActor->SetSpawnLocation(newspawnvector_2 + SpawnedActor->GetActorLocation());
 	
 	}
 	Print("This is index_j: ", FColor::Red);

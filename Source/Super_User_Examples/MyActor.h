@@ -17,7 +17,9 @@ private:
 	USphereComponent* Overlap_Area;
 	UPROPERTY()
 	UStaticMeshComponent* Mesh_1;
-	FVector Spawnlocation;
+	UPROPERTY(VisibleAnywhere)
+	FVector SpawnLocation;
+	UPROPERTY()
 	FVector DestructionLocation;
 	UPROPERTY(Transient)
 	TArray<UPrimitiveComponent*> OverlappingActors;
@@ -29,7 +31,8 @@ public:
 
 	UPROPERTY()
 	UMaterialInstanceDynamic* Dissolve_Material;
-	FVector GetSpawnLocation() { return Spawnlocation; }
+	FVector GetSpawnLocation() const { return SpawnLocation; }
+	void SetSpawnLocation(const FVector location){SpawnLocation = location;}
 
 
 	USphereComponent* GetRoot() { return Overlap_Area; }

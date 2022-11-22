@@ -5,7 +5,7 @@ static void Print(const FString& message, const FColor& color)
 {
 	if(GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1,30.0,color,message);
+		GEngine->AddOnScreenDebugMessage(-1,300.0,color,message);
 	}
 }
 

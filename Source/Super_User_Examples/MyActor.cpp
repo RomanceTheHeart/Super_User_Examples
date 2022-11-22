@@ -27,8 +27,8 @@ AMyActor::AMyActor()
 
 	Overlap_Area = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapComponent"));
 	Overlap_Area->SetSphereRadius(150);
-	Overlap_Area->SetRelativeLocation(FVector::ZeroVector);
-	Overlap_Area->SetRelativeRotation(FRotator::ZeroRotator);
+	Overlap_Area->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
+
 
 	SetRootComponent(Overlap_Area);
 
@@ -37,7 +37,7 @@ AMyActor::AMyActor()
 	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(
 		TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
 	if (MeshAsset.Object != nullptr) { Mesh_1->SetStaticMesh(MeshAsset.Object); }
-
+	Mesh_1->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
 	Mesh_1->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform, EName::None);
 	Mesh_1->SetRelativeLocation(FVector::ZeroVector);
 	Mesh_1->SetRelativeRotation(FRotator::ZeroRotator);
@@ -53,11 +53,11 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Mesh_1->SetSimulatePhysics(true);
+	 Overlap_Area->SetSimulatePhysics(true);
 	Material = Mesh_1->GetMaterial(1);
 	Dissolve_Material = UMaterialInstanceDynamic::Create(Material, this);
 	FVector ImpLuseVector = {0, 0, -3000};
-	Mesh_1->AddImpulse(ImpLuseVector, EName::None, true);
+	 Overlap_Area->AddImpulse(ImpLuseVector, EName::None, true);
 
 	FRotator meteorRotation = {0, 0, 360};
 	SetActorRotation(meteorRotation);
@@ -73,10 +73,12 @@ void AMyActor::BeginPlay()
 	{
 		for (TActorIterator<AStaticMeshActor> Itr(GetWorld()); Itr; ++Itr)
 		{
-			const AStaticMeshActor* component = Cast<AStaticMeshActor>(*Itr);
-			if (component != GetActor())
+			const AStaticMeshActor* StaticMeshActor = Cast<AStaticMeshActor>(*Itr);
+			if (StaticMeshActor)
 
-				Print(component->GetName(), FColor::Purple);
+				if (StaticMeshActor != GetActor())
+					Print(StaticMeshActor->GetActorNameOrLabel(), FColor::Green);
+			//Print(StaticMeshActor->ActorHasTag(FName::ToString() FName(TEXT("Wall"))), FColor::Green);
 		}
 	}
 }
