@@ -25,12 +25,12 @@ AMyActor::AMyActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 
-	Overlap_Area = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapComponent"));
-	Overlap_Area->SetSphereRadius(150);
-	Overlap_Area->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
+	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapComponent"));
+	CollisionSphere->SetSphereRadius(150);
+	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
 
 
-	SetRootComponent(Overlap_Area);
+	SetRootComponent(CollisionSphere);
 
 
 	Mesh_1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootMeshComonent"));
@@ -53,11 +53,11 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	 Overlap_Area->SetSimulatePhysics(true);
+	CollisionSphere->SetSimulatePhysics(true);
 	Material = Mesh_1->GetMaterial(1);
 	Dissolve_Material = UMaterialInstanceDynamic::Create(Material, this);
 	FVector ImpLuseVector = {0, 0, -3000};
-	 Overlap_Area->AddImpulse(ImpLuseVector, EName::None, true);
+	CollisionSphere->AddImpulse(ImpLuseVector, EName::None, true);
 
 	FRotator meteorRotation = {0, 0, 360};
 	SetActorRotation(meteorRotation);
@@ -73,12 +73,22 @@ void AMyActor::BeginPlay()
 	{
 		for (TActorIterator<AStaticMeshActor> Itr(GetWorld()); Itr; ++Itr)
 		{
+			int32 counter{0};
+			counter++;
 			const AStaticMeshActor* StaticMeshActor = Cast<AStaticMeshActor>(*Itr);
 			if (StaticMeshActor)
+				//ActorsToCollide.AddUnique(StaticMeshActor->GetActorLabel());
 
-				if (StaticMeshActor != GetActor())
-					Print(StaticMeshActor->GetActorNameOrLabel(), FColor::Green);
-			//Print(StaticMeshActor->ActorHasTag(FName::ToString() FName(TEXT("Wall"))), FColor::Green);
+				if (StaticMesh != GetActor())
+
+
+					if (StaticMeshActor->ActorHasTag("Floor_1"))
+					{
+						//Print(StaticMeshActor->GetActorLocation().ToString(),FColor::Blue);
+						CollisionSphere->SetWorldLocation(FMath::Lerp(this->GetActorLocation(),
+						                                              StaticMeshActor->GetActorLocation(),
+						                                              1.0f));
+					}
 		}
 	}
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "MyActor.generated.h"
 
@@ -14,7 +15,7 @@ class SUPER_USER_EXAMPLES_API AMyActor : public AActor
 
 private:
 	UPROPERTY()
-	USphereComponent* Overlap_Area;
+	USphereComponent* CollisionSphere;
 	UPROPERTY()
 	UStaticMeshComponent* Mesh_1;
 	UPROPERTY(VisibleAnywhere)
@@ -22,7 +23,9 @@ private:
 	UPROPERTY()
 	FVector DestructionLocation;
 	UPROPERTY(Transient)
-	TArray<UPrimitiveComponent*> OverlappingActors;
+	 mutable TArray<FString> ActorsToCollide;
+	UPROPERTY()
+	AActor* StaticMesh = nullptr;
 public:
 	// Sets default values for this actor's properties
 	AMyActor();
@@ -35,7 +38,7 @@ public:
 	void SetSpawnLocation(const FVector location){SpawnLocation = location;}
 
 
-	USphereComponent* GetRoot() { return Overlap_Area; }
+	USphereComponent* GetRoot() { return CollisionSphere; }
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
