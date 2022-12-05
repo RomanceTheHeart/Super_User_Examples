@@ -8,7 +8,7 @@ public class Super_User_Examples : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","Chaos" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

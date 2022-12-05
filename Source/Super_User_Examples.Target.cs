@@ -11,5 +11,12 @@ public class Super_User_ExamplesTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
 		ExtraModuleNames.AddRange( new string[] { "Super_User_Examples" } );
+		
+		bCompileChaos = true;
+		bUseChaos = true;
+		bCompilePhysX = true;
+		bCompileAPEX = true;
+		bCompileNvCloth = true;
+		bCustomSceneQueryStructure = true;
 	}
 }

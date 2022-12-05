@@ -12,12 +12,11 @@ void AMiniProjects::BeginPlay()
 	Super::BeginPlay();
 
 
-
 	FTransform SpawnLocation;
 
 	constexpr int32 Blockindex{2};
 	int32 Blockcounter{0};
-	 int32 BlockNumber = {static_cast<int32>(FMath::Pow(Blockindex,2))};
+	int32 BlockNumber = {static_cast<int32>(FMath::Pow(Blockindex, 2))};
 	float OffSetAmount{0};
 	float Z_OffsetAmount{0.0f};
 	//float worldtime = GetGameTimeSinceCreation();
@@ -34,15 +33,15 @@ void AMiniProjects::BeginPlay()
 		X_Offset = {((index / BlockNumber) * OffSetAmount)};
 		Y_Offset = {((index % BlockNumber) * OffSetAmount)};
 		Z_Offset = {((Blockindex % BlockNumber) * Z_OffsetAmount)};
-		Z_OffsetAmount =300;
+		Z_OffsetAmount = 300;
 		const FVector newspawnvector = FVector(X_Offset, Y_Offset, Z_Offset);
-			
+
 		if (GetWorld() != nullptr)
 		{
 			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector, FRotator(0, 0, 0),
-                                            SpawnParameters);
-			
-			SpawnedActor->SetSpawnLocation(newspawnvector+ SpawnedActor->GetActorLocation());
+			                                                SpawnParameters);
+
+			SpawnedActor->SetSpawnLocation(newspawnvector + SpawnedActor->GetActorLocation());
 		}
 		Blockcounter++;
 	}
@@ -50,7 +49,7 @@ void AMiniProjects::BeginPlay()
 	for (int32 index_j{Blockcounter}; index_j >= 0; index_j --)
 	{
 		Z_OffsetAmount = 1900;
-		Z_OffsetAmount -= (Blockcounter-index_j) * 50;
+		Z_OffsetAmount -= (Blockcounter - index_j) * 50;
 		OffSetAmount += 1;
 		Y_Offset = {((index_j % BlockNumber) * OffSetAmount)};
 		X_Offset = {((index_j / BlockNumber) * OffSetAmount)};
@@ -63,11 +62,13 @@ void AMiniProjects::BeginPlay()
 		                                                FRotator(0, 0, 0),
 		                                                SpawnParameters);
 		SpawnedActor->SetSpawnLocation(newspawnvector_2 + SpawnedActor->GetActorLocation());
-	
 	}
 	Print("This is index_j: ", FColor::Red);
 	Print(FString::FromInt(Blockcounter), FColor::Red);
 	Print("Actor's Spawned.", FColor::Blue);
+
+	//---> GetLevel()->Actors;
+	//Create a SkyActor that is a sphere. Spawn Meteorite actors with-in bounds.
 
 
 	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AMiniProjects::DestroyActor, 10);

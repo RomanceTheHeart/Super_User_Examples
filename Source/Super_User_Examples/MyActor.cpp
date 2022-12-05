@@ -46,6 +46,9 @@ AMyActor::AMyActor()
 		"MaterialInstanceConstant'/Game/Material_Examples/M_MasterRockMaterial_Inst.M_MasterRockMaterial_Inst'"));
 	Material = asset.Object;
 	Mesh_1->SetMaterial(0, Material);
+
+	/*geometryCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("Smash_Geometry"));
+	geometryCollection->RegisterComponent();*/
 }
 
 // Called when the game starts or when spawned
@@ -53,15 +56,10 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
 	CollisionSphere->SetSimulatePhysics(true);
 	Material = Mesh_1->GetMaterial(1);
 	Dissolve_Material = UMaterialInstanceDynamic::Create(Material, this);
-	FVector ImpLuseVector = {0, 0, -3000};
-	CollisionSphere->AddImpulse(ImpLuseVector, EName::None, true);
-
-	FRotator meteorRotation = {0, 0, 360};
-	SetActorRotation(meteorRotation);
-	AddActorLocalRotation(meteorRotation);
 	if (Dissolve_Material != nullptr)
 	{
 		//Mesh_1->SetMaterial(0,Dissolve_Material);
@@ -79,13 +77,20 @@ void AMyActor::BeginPlay()
 			if (StaticMeshActor)
 				//ActorsToCollide.AddUnique(StaticMeshActor->GetActorLabel());
 
-				if (StaticMesh != GetActor())
+				if (StaticMeshActor != GetActor())
 
 
 					if (StaticMeshActor->ActorHasTag("Floor_1"))
 					{
 						//Print(StaticMeshActor->GetActorLocation().ToString(),FColor::Blue);
-						CollisionSphere->SetWorldLocation(FMath::Lerp(this->GetActorLocation(),
+						float direction = StaticMeshActor->GetActorLocation().Normalize();
+						FVector ImpLuseVector = this->GetActorLocation() - direction;;
+						CollisionSphere->AddImpulse(ImpLuseVector, EName::None, true);
+
+						FRotator meteorRotation = {0, 0, 360};
+						SetActorRotation(meteorRotation);
+						AddActorLocalRotation(meteorRotation);
+						CollisionSphere->AddLocalOffset(FMath::Lerp(this->GetActorLocation(),
 						                                              StaticMeshActor->GetActorLocation(),
 						                                              1.0f));
 					}
