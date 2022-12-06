@@ -23,6 +23,8 @@ private:
 public:
 	UPROPERTY()
 	class AMyActor* SpawnedActor;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn_Actor", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AMyActor> SpawnedActor_BP = nullptr;
 
 	UFUNCTION()
 	void DestroyActor();

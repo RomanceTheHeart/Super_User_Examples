@@ -16,7 +16,7 @@ void AMiniProjects::BeginPlay()
 
 	constexpr int32 Blockindex{2};
 	int32 Blockcounter{0};
-	int32 BlockNumber = {static_cast<int32>(FMath::Pow(Blockindex, 2))};
+	int32 BlockNumber = {static_cast<int32>(FMath::Pow(Blockindex, 3))};
 	float OffSetAmount{0};
 	float Z_OffsetAmount{0.0f};
 	//float worldtime = GetGameTimeSinceCreation();
@@ -27,7 +27,7 @@ void AMiniProjects::BeginPlay()
 	float Z_Offset{0};
 
 
-	for (int32 index{0}; index < FMath::Pow(BlockNumber, 2); index ++)
+	for (int32 index{0}; index < FMath::Pow(BlockNumber, 1); index ++)
 	{
 		OffSetAmount = {150};
 		X_Offset = {((index / BlockNumber) * OffSetAmount)};
@@ -38,7 +38,7 @@ void AMiniProjects::BeginPlay()
 
 		if (GetWorld() != nullptr)
 		{
-			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector, FRotator(0, 0, 0),
+			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(SpawnedActor_BP, newspawnvector, FRotator(0, 0, 0),
 			                                                SpawnParameters);
 
 			SpawnedActor->SetSpawnLocation(newspawnvector + SpawnedActor->GetActorLocation());
@@ -58,7 +58,7 @@ void AMiniProjects::BeginPlay()
 		//This Works. Just Adjust the scaler-Function to form a pyramid. 
 
 		const FVector newspawnvector_2 = FVector(X_Offset, Y_Offset, Z_Offset);
-		SpawnedActor = GetWorld()->SpawnActor<AMyActor>(AMyActor::StaticClass(), newspawnvector_2,
+		SpawnedActor = GetWorld()->SpawnActor<AMyActor>(SpawnedActor_BP, newspawnvector_2,
 		                                                FRotator(0, 0, 0),
 		                                                SpawnParameters);
 		SpawnedActor->SetSpawnLocation(newspawnvector_2 + SpawnedActor->GetActorLocation());

@@ -27,7 +27,7 @@ AMyActor::AMyActor()
 
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapComponent"));
 	CollisionSphere->SetSphereRadius(150);
-	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
+	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 
 
 	SetRootComponent(CollisionSphere);
@@ -56,7 +56,7 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+
 	CollisionSphere->SetSimulatePhysics(true);
 	Material = Mesh_1->GetMaterial(1);
 	Dissolve_Material = UMaterialInstanceDynamic::Create(Material, this);
@@ -75,24 +75,23 @@ void AMyActor::BeginPlay()
 			counter++;
 			const AStaticMeshActor* StaticMeshActor = Cast<AStaticMeshActor>(*Itr);
 			if (StaticMeshActor)
-				//ActorsToCollide.AddUnique(StaticMeshActor->GetActorLabel());
-
 				if (StaticMeshActor != GetActor())
-
-
 					if (StaticMeshActor->ActorHasTag("Floor_1"))
 					{
 						//Print(StaticMeshActor->GetActorLocation().ToString(),FColor::Blue);
-						float direction = StaticMeshActor->GetActorLocation().Normalize();
-						FVector ImpLuseVector = this->GetActorLocation() - direction;;
+						FVector direction = this->GetActorLocation();
+						FVector ImpLuseVector = (direction - StaticMeshActor->
+						                                     GetActorLocation());
+						direction.Normalize();
 						CollisionSphere->AddImpulse(ImpLuseVector, EName::None, true);
 
-						FRotator meteorRotation = {0, 0, 360};
-						SetActorRotation(meteorRotation);
-						AddActorLocalRotation(meteorRotation);
+						FRotator plusRotation = {0, 0, 360 * 360};
+						FRotator minusRotation = {0, 0, 360 - 360}; 
+						SetActorRotation(plusRotation);
+						AddActorLocalRotation(minusRotation);
 						CollisionSphere->AddLocalOffset(FMath::Lerp(this->GetActorLocation(),
-						                                              StaticMeshActor->GetActorLocation(),
-						                                              1.0f));
+						                                            StaticMeshActor->GetActorLocation(),
+						                                            .3f));
 					}
 		}
 	}

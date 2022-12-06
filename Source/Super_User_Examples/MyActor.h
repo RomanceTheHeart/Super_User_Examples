@@ -18,6 +18,7 @@ class SUPER_USER_EXAMPLES_API AMyActor : public AActor
 	GENERATED_BODY()
 
 private:
+	UINT64 ImpulseVelocity{100};
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* CollisionSphere;
 
