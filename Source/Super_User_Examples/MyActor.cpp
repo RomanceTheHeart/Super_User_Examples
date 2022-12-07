@@ -85,11 +85,11 @@ void AMyActor::BeginPlay()
 						direction.Normalize();
 						CollisionSphere->AddImpulse(ImpLuseVector, EName::None, true);
 
-						FRotator plusRotation = {0, 0, 360 * 360};
-						FRotator minusRotation = {0, 0, 360 - 360}; 
+						FRotator plusRotation = {0, 0, 360};
+						FRotator minusRotation = {0, 0, -360}; 
 						SetActorRotation(plusRotation);
 						AddActorLocalRotation(minusRotation);
-						CollisionSphere->AddLocalOffset(FMath::Lerp(this->GetActorLocation(),
+						CollisionSphere->AddLocalOffset(FMath::Lerp(direction,
 						                                            StaticMeshActor->GetActorLocation(),
 						                                            .3f));
 					}
