@@ -30,5 +30,8 @@ private:
 
 	//Create a function
 	//deleteunsedassets()
+	UFUNCTION(CallInEditor)
+	void DeleteUnusedAssets();
+	
 	
 };

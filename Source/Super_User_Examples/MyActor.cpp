@@ -31,8 +31,8 @@ AMyActor::AMyActor()
 
 
 	SetRootComponent(CollisionSphere);
-
-
+	
+	
 	Mesh_1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootMeshComonent"));
 	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(
 		TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
@@ -47,14 +47,14 @@ AMyActor::AMyActor()
 	Material = asset.Object;
 	Mesh_1->SetMaterial(0, Material);
 
-	/*geometryCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("Smash_Geometry"));
-	geometryCollection->RegisterComponent();*/
+
 }
 
 // Called when the game starts or when spawned
 void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
+
 
 
 	CollisionSphere->SetSimulatePhysics(true);

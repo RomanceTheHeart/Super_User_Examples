@@ -22,8 +22,10 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* CollisionSphere;
 
+
 	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
-	UGeometryCollectionComponent* geometryCollection; */
+	UGeometryCollection* Collection*/;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh_1;
 

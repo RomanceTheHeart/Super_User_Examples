@@ -2,11 +2,11 @@
 
 
 #include "AssetActions/QuickAssetManager.h"
-
 #include "AssetSelection.h"
 #include "EditorUtilityLibrary.h"
 #include "EditorAssetLibrary.h"
 #include "DebugHeader.h"
+#include "ObjectTools.h"
 #include "Materials/MaterialInstanceConstant.h"
 
 
@@ -57,27 +57,27 @@ void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
 void UQuickAssetManager::RenamePrefix()
 {
 	TArray<UObject*> SelectedObjects = UEditorUtilityLibrary::GetSelectedAssets();
-	uint32 counter =0;
-	for(UObject* selectedobject: SelectedObjects)
+	uint32 counter = 0;
+	for (UObject* selectedobject : SelectedObjects)
 	{
-		if(!selectedobject)
+		if (!selectedobject)
 		{
 			continue;
 		}
 		FString* prefixfound = PrefixMap.Find(selectedobject->GetClass()); //The "Find" operation returns a pointer. 
-		if(!prefixfound||prefixfound->IsEmpty())
+		if (!prefixfound || prefixfound->IsEmpty())
 		{
-			Print(TEXT("Failed to find Prefix for Class.")+selectedobject->GetClass()->GetName(),FColor::Red);
+			Print(TEXT("Failed to find Prefix for Class.") + selectedobject->GetClass()->GetName(), FColor::Red);
 			continue;
 		}
 		//create a name when object is right clicked. 
 		FString oldname = selectedobject->GetName();
-		if(oldname.StartsWith(*prefixfound))
+		if (oldname.StartsWith(*prefixfound))
 		{
-			Print(oldname+TEXT(" Already has prefix added."), FColor::Red);
+			Print(oldname + TEXT(" Already has prefix added."), FColor::Red);
 			continue;
 		}
-		if(selectedobject->IsA<UMaterialInstanceConstant>())
+		if (selectedobject->IsA<UMaterialInstanceConstant>())
 		{
 			//remove the prefix and suffix from a material instance. 
 			oldname.RemoveFromStart(TEXT("M_"));
@@ -85,16 +85,17 @@ void UQuickAssetManager::RenamePrefix()
 		}
 		const FString newname = *prefixfound + oldname;
 
-		UEditorUtilityLibrary::RenameAsset(selectedobject,newname);
+		UEditorUtilityLibrary::RenameAsset(selectedobject, newname);
 		++counter;
-		
-		
 	}
-	if(counter>0)
+	if (counter > 0)
 	{
 		ShowNotificationInfo(TEXT("Successfully renamed " + FString::FromInt(counter)+ " Assets"));
 	}
+}
 
+void UQuickAssetManager::DeleteUnusedAssets()
+{
 	//create an array to get selected assets
 	//create another array to store the unused assets
 	//loop through the assets that were found.
@@ -105,5 +106,26 @@ void UQuickAssetManager::RenamePrefix()
 	// print message if they are being used.
 	//if we get past this check.
 	//include header files objecttools.h to access better delete tools
-	//delete assets. This action may need to include a module. 
+	//delete assets. This action may need to include a module.
+
+	TArray<FAssetData> SelectedAssetData = UEditorUtilityLibrary::GetSelectedAssetData();
+	TArray<FAssetData> AssetDataFound;
+	int64 counter{0};
+	for (const FAssetData& asset : SelectedAssetData)
+	{
+		TArray<FString> objectsFound = UEditorAssetLibrary::FindPackageReferencersForAsset(
+			asset.ObjectPath.ToString());
+		if (SelectedAssetData.Num() == 0)
+		{
+		
+			AssetDataFound.Add(asset);
+
+			if (AssetDataFound.Num() > 0)
+			{
+				const int32 NumOfAssetsDeleted = ObjectTools::DeleteAssets(AssetDataFound);
+			}
+		}
+
+		return;
+	}
 }
