@@ -3,10 +3,13 @@
 
 #include "AssetActions/QuickAssetManager.h"
 #include "AssetSelection.h"
+#include "AssetToolsModule.h"
 #include "EditorUtilityLibrary.h"
 #include "EditorAssetLibrary.h"
 #include "DebugHeader.h"
 #include "ObjectTools.h"
+#include "AssetRegistry/AssetRegistryModule.h"
+#include "EnvironmentQuery/EnvQueryTypes.h"
 #include "Materials/MaterialInstanceConstant.h"
 
 
@@ -115,17 +118,51 @@ void UQuickAssetManager::DeleteUnusedAssets()
 	{
 		TArray<FString> objectsFound = UEditorAssetLibrary::FindPackageReferencersForAsset(
 			asset.ObjectPath.ToString());
-		if (SelectedAssetData.Num() == 0)
+		if (SelectedAssetData.Num() > 0)
 		{
-		
 			AssetDataFound.Add(asset);
 
 			if (AssetDataFound.Num() > 0)
 			{
+				//this function warns you before deleting an asset. Warning, this action can not be undone"
 				const int32 NumOfAssetsDeleted = ObjectTools::DeleteAssets(AssetDataFound);
+				FixRedirectories();
+				counter++;
 			}
 		}
-
-		return;
+		if (AssetDataFound.Num() == 0)
+		{
+			ShowDialog(EAppMsgType::Ok,TEXT("No Unused assets found."));
+			return;
+		}
+		else
+		{
+			ShowNotificationInfo("Successfully Deleted" + FString::FromInt(counter));
+		}
 	}
 }
+
+void UQuickAssetManager::FixRedirectories()
+{
+	TArray<UObjectRedirector*> Fixes;
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::Get().LoadModuleChecked<FAssetRegistryModule>(
+		TEXT("AssetRegistry"));
+	FARFilter RegisterFilter;
+	RegisterFilter.bRecursivePaths = true;
+	RegisterFilter.PackagePaths.Emplace("/Game");
+	RegisterFilter.ClassNames.Emplace("ObjectRedirector");
+
+	TArray<FAssetData> RedirectAssetData;
+	AssetRegistryModule.Get().GetAssets(RegisterFilter, RedirectAssetData);
+
+	for (const FAssetData& AssetData : RedirectAssetData)
+	{
+		if (UObjectRedirector* Redirection = Cast<UObjectRedirector>(AssetData.GetAsset()))
+		{
+			Fixes.Add(Redirection);
+		}
+	}
+	const FAssetToolsModule& AssetToolsModule = FModuleManager::LoadModuleChecked<FAssetToolsModule>(TEXT("AssetTools"));
+	AssetToolsModule.Get().FixupReferencers(Fixes);
+}
+

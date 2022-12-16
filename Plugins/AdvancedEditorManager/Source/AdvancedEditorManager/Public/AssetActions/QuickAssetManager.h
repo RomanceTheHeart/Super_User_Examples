@@ -27,11 +27,12 @@ private:
 
 	UFUNCTION(CallInEditor)
 	void RenamePrefix();
-
-	//Create a function
-	//deleteunsedassets()
+	
 	UFUNCTION(CallInEditor)
 	void DeleteUnusedAssets();
+
+	UFUNCTION(CallInEditor)
+	void FixRedirectories();
 	
 	
 };

@@ -12,4 +12,9 @@ public:
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
+
+#pragma region MenuExtention
+private:
+	 void Init_MenuExtention();
+#pragma endregion 
 };
