@@ -16,5 +16,9 @@ public:
 #pragma region MenuExtention
 private:
 	 void Init_MenuExtention();
+	TSharedRef<FExtender>CustomContentExtender(const TArray<FString>& SelectedPaths);
+	void AddCustomContentEntry(class FMenuBuilder & MenuBuilder);
+	void OnDeleteUnusedAssets();
+
 #pragma endregion 
 };
