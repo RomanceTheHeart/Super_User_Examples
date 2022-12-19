@@ -63,9 +63,9 @@ void AMiniProjects::BeginPlay()
 		                                                SpawnParameters);
 		SpawnedActor->SetSpawnLocation(newspawnvector_2 + SpawnedActor->GetActorLocation());
 	}
-	Print("This is index_j: ", FColor::Red);
+/*Debug::	Print("This is index_j: ", FColor::Red);
 	Print(FString::FromInt(Blockcounter), FColor::Red);
-	Print("Actor's Spawned.", FColor::Blue);
+	Print("Actor's Spawned.", FColor::Blue);*/
 
 	//---> GetLevel()->Actors;
 	//Create a SkyActor that is a sphere. Spawn Meteorite actors with-in bounds.
@@ -78,7 +78,7 @@ void AMiniProjects::DestroyActor()
 {
 	if (SpawnedActor != nullptr)
 	{
-		Print("Actor Destroyed!!", FColor::Red);
+		/*Print("Actor Destroyed!!", FColor::Red);*/
 		SpawnedActor->Destroy();
 	}
 }

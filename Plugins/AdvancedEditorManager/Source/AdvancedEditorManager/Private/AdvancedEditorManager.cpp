@@ -1,9 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "AdvancedEditorManager.h"
+
+#include "AssetToolsModule.h"
 #include "ContentBrowserModule.h"
 #include "DebugHeader.h"
 #include "EditorAssetLibrary.h"
+#include "AssetRegistry/AssetRegistryModule.h"
 
 
 #define LOCTEXT_NAMESPACE "FAdvancedEditorManagerModule"
@@ -12,6 +15,8 @@ void FAdvancedEditorManagerModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
 	Init_MenuExtention();
+	//Register the Nomad Tab. 
+	RegisterAdvancedDeletion_Protocol();
 }
 
 void FAdvancedEditorManagerModule::ShutdownModule()
@@ -62,11 +67,19 @@ void FAdvancedEditorManagerModule::AddCustomContentEntry(FMenuBuilder& MenuBuild
 	                         FText::FromString(TEXT("Safely Delete Unused assets from selected folder.")),
 	                         FSlateIcon(), FExecuteAction::
 	                         CreateRaw(this, &FAdvancedEditorManagerModule::OnDeleteUnusedAssets));
+	
+	MenuBuilder.AddMenuEntry(FText::FromString(TEXT("Advanced Deletion")),
+							 FText::FromString(TEXT("An Advanced Way To Access Assets and Delete Them.")),
+							 FSlateIcon(), FExecuteAction::
+							 CreateRaw(this,&FAdvancedEditorManagerModule::AdvancedDelete));
 }
 
 void FAdvancedEditorManagerModule::OnDeleteUnusedAssets()
 {
 	Print("Deleting Assets", FColor::Green);
+
+	//Before deleting asset folders fix-up the redirects. 
+	FixRedirectors();
 
 	FolderAssetLocations = {"/Game"};
 	const TArray<FString>& FolderAssetPaths = UEditorAssetLibrary::ListAssets(FolderAssetLocations[0], true, true);
@@ -118,7 +131,53 @@ void FAdvancedEditorManagerModule::OnDeleteUnusedAssets()
 	}
 }
 
+void FAdvancedEditorManagerModule::FixRedirectors()
+{
+	TArray<UObjectRedirector*> Fixes;
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::Get().LoadModuleChecked<FAssetRegistryModule>(
+		TEXT("AssetRegistry"));
+	FARFilter RegisterFilter;
+	RegisterFilter.bRecursivePaths = true;
+	RegisterFilter.PackagePaths.Emplace("/Game");
+	RegisterFilter.ClassNames.Emplace("ObjectRedirector");
 
+	TArray<FAssetData> RedirectAssetData;
+	AssetRegistryModule.Get().GetAssets(RegisterFilter, RedirectAssetData);
+
+	for (const FAssetData& AssetData : RedirectAssetData)
+	{
+		if (UObjectRedirector* Redirection = Cast<UObjectRedirector>(AssetData.GetAsset()))
+		{
+			Fixes.Add(Redirection);
+		}
+	}
+	const FAssetToolsModule& AssetToolsModule = FModuleManager::LoadModuleChecked<
+		FAssetToolsModule>(TEXT("AssetTools"));
+	AssetToolsModule.Get().FixupReferencers(Fixes);
+}
+
+
+#pragma endregion
+
+#pragma region NomadTab
+void FAdvancedEditorManagerModule::RegisterAdvancedDeletion_Protocol()
+{
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(FName("AdvancedDeletion"),
+	                                                  FOnSpawnTab::CreateRaw(
+		                                                  this, &FAdvancedEditorManagerModule::SpawnDeletionTab));
+}
+
+TSharedRef<SDockTab> FAdvancedEditorManagerModule::SpawnDeletionTab(const FSpawnTabArgs& spawner)
+{
+	
+	return SNew(SDockTab).TabRole(ETabRole::NomadTab);
+}
+
+void FAdvancedEditorManagerModule::AdvancedDelete()
+{
+	//Print(TEXT("This Works!"),FColor::Blue);
+	FGlobalTabmanager::Get()->TryInvokeTab(FName("AdvancedDeletion"));
+}
 #pragma endregion
 
 #undef LOCTEXT_NAMESPACE

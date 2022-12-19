@@ -56,7 +56,7 @@ void AMyActor::BeginPlay()
 	Super::BeginPlay();
 
 
-	PrintLog(CollisionSphere->GetName());
+	//PrintLog(CollisionSphere->GetName());
 	CollisionSphere->SetSimulatePhysics(true);
 	Material = Mesh_1->GetMaterial(1);
 	Dissolve_Material = UMaterialInstanceDynamic::Create(Material, this);
@@ -78,7 +78,7 @@ void AMyActor::BeginPlay()
 				if (StaticMeshActor != GetActor())
 					if (StaticMeshActor->ActorHasTag("Floor_1"))
 					{
-						Print(StaticMeshActor->GetActorLocation().ToString(),FColor::Blue);
+						//Print(StaticMeshActor->GetActorLocation().ToString(),FColor::Blue);
 						FVector direction = this->GetActorLocation();
 						FVector ImpLuseVector = (direction - StaticMeshActor->
 						                                     GetActorLocation());

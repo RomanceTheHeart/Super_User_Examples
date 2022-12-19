@@ -21,6 +21,15 @@ private:
 	TSharedRef<FExtender> CustomContentExtender(const TArray<FString>& SelectedPaths);
 	void AddCustomContentEntry(class FMenuBuilder& MenuBuilder);
 	void OnDeleteUnusedAssets();
+	void FixRedirectors();
+
 
 #pragma endregion
+
+
+#pragma region NomadTab
+void RegisterAdvancedDeletion_Protocol();
+TSharedRef<SDockTab>SpawnDeletionTab(const FSpawnTabArgs& spawner);
+void AdvancedDelete();
+#pragma endregion 
 };

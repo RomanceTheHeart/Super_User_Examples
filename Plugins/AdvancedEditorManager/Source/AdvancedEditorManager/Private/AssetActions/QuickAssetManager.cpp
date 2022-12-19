@@ -20,7 +20,7 @@ void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
 
 	if (NumberOfDuplicates <= 0)
 	{
-		Print("Please Enter a Valid Number", FColor::Blue);
+		//Print("Please Enter a Valid Number", FColor::Blue);
 
 
 		Debug::ShowDialog(EAppMsgType::Ok,TEXT("Please enter a valid Number."));
@@ -70,14 +70,14 @@ void UQuickAssetManager::RenamePrefix()
 		FString* prefixfound = PrefixMap.Find(selectedobject->GetClass()); //The "Find" operation returns a pointer. 
 		if (!prefixfound || prefixfound->IsEmpty())
 		{
-			Print(TEXT("Failed to find Prefix for Class.") + selectedobject->GetClass()->GetName(), FColor::Red);
+			//Print(TEXT("Failed to find Prefix for Class.") + selectedobject->GetClass()->GetName(), FColor::Red);
 			continue;
 		}
 		//create a name when object is right clicked. 
 		FString oldname = selectedobject->GetName();
 		if (oldname.StartsWith(*prefixfound))
 		{
-			Print(oldname + TEXT(" Already has prefix added."), FColor::Red);
+			//Print(oldname + TEXT(" Already has prefix added."), FColor::Red);
 			continue;
 		}
 		if (selectedobject->IsA<UMaterialInstanceConstant>())
