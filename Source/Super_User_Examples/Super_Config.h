@@ -1,17 +1,7 @@
 ﻿#pragma once
 
-
-static void Print(const FString& message, const FColor& color)
+namespace Super_Config
 {
-	if(GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1,300.0,color,message);
-	}
-}
-
-static void PrintLog(const FString &message)
-{
-	UE_LOG(LogTemp,Warning,TEXT("%s"),*message);
-
-	
+#define Print(String,Color)if(GEngine) GEngine->AddOnScreenDebugMessage(-1,300.0,Color,String)
+#define PrintLog(String) UE_LOG(LogTemp,Warning,TEXT("%s"),*String);
 }

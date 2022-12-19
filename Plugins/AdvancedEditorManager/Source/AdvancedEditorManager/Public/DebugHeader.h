@@ -5,44 +5,38 @@
 #include "Widgets/Notifications/SNotificationList.h"
 
 
-inline void Print(const FString& message, const FColor& color)
+namespace Debug
 {
-	if(GEngine)
+
+#define Print(String,Color)if(GEngine) GEngine->AddOnScreenDebugMessage(-1,300.0,Color,String)
+#define PrintLog(String) UE_LOG(LogTemp,Warning,TEXT("%s"),*String);
+
+	inline EAppReturnType::Type ShowDialog(EAppMsgType::Type m_type, const FString &message, bool b_is_warning = true)
 	{
-		GEngine->AddOnScreenDebugMessage(-1,30.0,color,message);
-	}
-}
+		if(b_is_warning == true)
+		{
+			const FText MessageTitle = FText::FromString("Warning");
 
-inline void PrintLog(const FString &message)
-{
-	UE_LOG(LogTemp,Warning,TEXT("%s"),*message);
-
-	
-}
-
-inline EAppReturnType::Type ShowDialog(EAppMsgType::Type m_type, const FString &message, bool b_is_warning = true)
-{
-	if(b_is_warning == true)
-	{
-		const FText MessageTitle = FText::FromString("Warning");
-
-		return 	FMessageDialog::Open(m_type,FText::FromString(message),&MessageTitle);
+			return 	FMessageDialog::Open(m_type,FText::FromString(message),&MessageTitle);
 		
+		}
+		else
+		{
+			return FMessageDialog::Open(m_type,FText::FromString(message));
+		}
+	
+	
 	}
-	else
+	void ShowNotificationInfo(const FString &message)
 	{
-		return FMessageDialog::Open(m_type,FText::FromString(message));
+		//This function adds a notification message to the screen.
+		//This object is declared as a struct. It's constructor takes in an info structure as a parameter.
+	
+		FNotificationInfo NotifyInfo(FText::FromString(message));
+		NotifyInfo.bUseLargeFont = true;
+		NotifyInfo.FadeOutDuration =7.5;
+		FSlateNotificationManager::Get().AddNotification(NotifyInfo);
 	}
-	
-	
 }
-void ShowNotificationInfo(const FString &message)
-{
-	//This function adds a notification message to the screen.
-	//This object is declared as a struct. It's constructor takes in an info structure as a parameter.
-	
-	FNotificationInfo NotifyInfo(FText::FromString(message));
-	NotifyInfo.bUseLargeFont = true;
-	NotifyInfo.FadeOutDuration =7.5;
-	FSlateNotificationManager::Get().AddNotification(NotifyInfo);
-}
+
+

@@ -23,7 +23,7 @@ void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
 		Print("Please Enter a Valid Number", FColor::Blue);
 
 
-		ShowDialog(EAppMsgType::Ok,TEXT("Please enter a valid Number."));
+		Debug::ShowDialog(EAppMsgType::Ok,TEXT("Please enter a valid Number."));
 		return;
 	}
 
@@ -52,7 +52,7 @@ void UQuickAssetManager::DuplicateAssets(uint64 NumberOfDuplicates)
 		if (counter > 0)
 		{
 			//add debug message;
-			ShowNotificationInfo("Successfully Duplicated " + FString::FromInt(counter) + " files.");
+			 Debug::ShowNotificationInfo("Successfully Duplicated " + FString::FromInt(counter) + " files.");
 		}
 	}
 }
@@ -93,7 +93,7 @@ void UQuickAssetManager::RenamePrefix()
 	}
 	if (counter > 0)
 	{
-		ShowNotificationInfo(TEXT("Successfully renamed " + FString::FromInt(counter)+ " Assets"));
+		Debug::ShowNotificationInfo(TEXT("Successfully renamed " + FString::FromInt(counter)+ " Assets"));
 	}
 }
 
@@ -132,12 +132,12 @@ void UQuickAssetManager::DeleteUnusedAssets()
 		}
 		if (AssetDataFound.Num() == 0)
 		{
-			ShowDialog(EAppMsgType::Ok,TEXT("No Unused assets found."));
+			Debug::ShowDialog(EAppMsgType::Ok,TEXT("No Unused assets found."));
 			return;
 		}
 		else
 		{
-			ShowNotificationInfo("Successfully Deleted" + FString::FromInt(counter));
+			Debug::ShowNotificationInfo("Successfully Deleted" + FString::FromInt(counter));
 		}
 	}
 }
