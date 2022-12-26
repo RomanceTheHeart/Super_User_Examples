@@ -15,7 +15,8 @@ public:
 
 #pragma region MenuExtention
 private:
-	TArray<FString>FolderAssetLocations;
+	TArray<FString>FolderAssetLocations = {"/Game"};
+
 	uint32 NumberAssets = {0};
 	void Init_MenuExtention();
 	TSharedRef<FExtender> CustomContentExtender(const TArray<FString>& SelectedPaths);
@@ -31,5 +32,7 @@ private:
 void RegisterAdvancedDeletion_Protocol();
 TSharedRef<SDockTab>SpawnDeletionTab(const FSpawnTabArgs& spawner);
 void AdvancedDelete();
+
+TArray<TSharedPtr<FAssetData>>ReturnPackageAssets();
 #pragma endregion 
 };

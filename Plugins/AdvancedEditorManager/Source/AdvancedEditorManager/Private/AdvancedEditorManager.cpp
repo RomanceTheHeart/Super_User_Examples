@@ -7,6 +7,7 @@
 #include "DebugHeader.h"
 #include "EditorAssetLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
+#include "SlateWidgets/AdvancedDeletionWidget.h"
 
 
 #define LOCTEXT_NAMESPACE "FAdvancedEditorManagerModule"
@@ -67,11 +68,11 @@ void FAdvancedEditorManagerModule::AddCustomContentEntry(FMenuBuilder& MenuBuild
 	                         FText::FromString(TEXT("Safely Delete Unused assets from selected folder.")),
 	                         FSlateIcon(), FExecuteAction::
 	                         CreateRaw(this, &FAdvancedEditorManagerModule::OnDeleteUnusedAssets));
-	
+
 	MenuBuilder.AddMenuEntry(FText::FromString(TEXT("Advanced Deletion")),
-							 FText::FromString(TEXT("An Advanced Way To Access Assets and Delete Them.")),
-							 FSlateIcon(), FExecuteAction::
-							 CreateRaw(this,&FAdvancedEditorManagerModule::AdvancedDelete));
+	                         FText::FromString(TEXT("An Advanced Way To Access Assets and Delete Them.")),
+	                         FSlateIcon(), FExecuteAction::
+	                         CreateRaw(this, &FAdvancedEditorManagerModule::AdvancedDelete));
 }
 
 void FAdvancedEditorManagerModule::OnDeleteUnusedAssets()
@@ -81,7 +82,6 @@ void FAdvancedEditorManagerModule::OnDeleteUnusedAssets()
 	//Before deleting asset folders fix-up the redirects. 
 	FixRedirectors();
 
-	FolderAssetLocations = {"/Game"};
 	const TArray<FString>& FolderAssetPaths = UEditorAssetLibrary::ListAssets(FolderAssetLocations[0], true, true);
 
 	Print(TEXT("Number of Assets: " + FString::FromInt(FolderAssetPaths.Num())), FColor::Green);
@@ -169,14 +169,39 @@ void FAdvancedEditorManagerModule::RegisterAdvancedDeletion_Protocol()
 
 TSharedRef<SDockTab> FAdvancedEditorManagerModule::SpawnDeletionTab(const FSpawnTabArgs& spawner)
 {
-	
-	return SNew(SDockTab).TabRole(ETabRole::NomadTab);
+	return SNew(SDockTab).TabRole(ETabRole::NomadTab)
+	[
+		SNew(SAdvancedDeletionTab)
+		.TitleString(TEXT("String"))
+		.SharedDataArray(ReturnPackageAssets())
+	];
 }
 
 void FAdvancedEditorManagerModule::AdvancedDelete()
 {
 	//Print(TEXT("This Works!"),FColor::Blue);
 	FGlobalTabmanager::Get()->TryInvokeTab(FName("AdvancedDeletion"));
+}
+
+TArray<TSharedPtr<FAssetData>> FAdvancedEditorManagerModule::ReturnPackageAssets()
+{
+	TArray<TSharedPtr<FAssetData>>SelectedAssets;
+	TArray<FString> AssetPathNames = UEditorAssetLibrary::ListAssets(FolderAssetLocations[0]);
+	for (const FString& names : AssetPathNames)
+	{
+		if (names.Contains(TEXT("Developers")) ||
+			names.Contains(TEXT("Collections")) ||
+			names.Contains(TEXT("__ExternalActors__"))
+			|| names.Contains(TEXT("__ExternalObjects__")))
+		{
+			continue;
+		}
+		if(!UEditorAssetLibrary::DoesAssetExist(names)) continue;
+		const FAssetData rawData = UEditorAssetLibrary::FindAssetData(names);
+		//The return type of MakeShared will be a pointer, Now we can add this to SelectedAssets. 
+		SelectedAssets.Add(MakeShared<FAssetData>(rawData));
+	}
+return  SelectedAssets;
 }
 #pragma endregion
 

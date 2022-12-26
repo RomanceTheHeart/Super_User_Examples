@@ -9,7 +9,7 @@
 
 namespace Debug
 {
-	inline EAppReturnType::Type ShowDialog(EAppMsgType::Type m_type, const FString& message, bool b_is_warning = true)
+	static EAppReturnType::Type ShowDialog(EAppMsgType::Type m_type, const FString& message, bool b_is_warning = true)
 	{
 		if (b_is_warning == true)
 		{
@@ -23,7 +23,7 @@ namespace Debug
 		}
 	}
 
-	void ShowNotificationInfo(const FString& message)
+	static void ShowNotificationInfo(const FString& message)
 	{
 		//This function adds a notification message to the screen.
 		//This object is declared as a struct. It's constructor takes in an info structure as a parameter.

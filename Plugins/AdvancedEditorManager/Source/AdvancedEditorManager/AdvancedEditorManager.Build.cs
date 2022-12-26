@@ -28,7 +28,8 @@ public class AdvancedEditorManager : ModuleRules
 			new string[]
 			{
 				
-				"Core","Blutility","EditorScriptingUtilities","Chaos","UMG","UnrealEd","AssetTools","ContentBrowser"
+				"Core","Blutility","EditorScriptingUtilities","Chaos","UMG","UnrealEd","AssetTools","ContentBrowser",
+				"InputCore"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
