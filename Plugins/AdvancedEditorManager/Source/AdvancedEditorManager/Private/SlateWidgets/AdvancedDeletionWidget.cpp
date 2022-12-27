@@ -22,7 +22,7 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 		.AutoHeight()
 		[
 			SNew(STextBlock)
-			.Text(FText::FromString(TEXT("Advanced Deletion")))
+			.Text(FText::FromString(TEXT("Asset List")))
 			.Font(TitleTextInfo)
 			.Justification(ETextJustify::Center)
 			.ColorAndOpacity(FColor::White)
@@ -31,11 +31,11 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 		+ SVerticalBox::Slot()
 		.AutoHeight()
 		[
-			SNew(SVerticalBox)
+			SNew(SHorizontalBox)
 		]
 		//This third slot is used to list various asset.
 		+ SVerticalBox::Slot()
-		.AutoHeight()
+		.VAlign(EVerticalAlignment::VAlign_Fill)
 		[SNew(SScrollBox)
 			+ SScrollBox::Slot()
 			[
@@ -56,13 +56,38 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay,
                                                                const TSharedRef<STableViewBase>& OwnerTable) const
 {
-	// DataToDisplay returns a shared pointer so, we can directly access it's contents. 
+	//This function returns list of tsharedrefferences to sharedptr fasset data. 
+	// DataToDisplay returns a shared pointer so, we can directly access it's contents.
+	// This one is tricky. Needs more attention. 
 	const FString NamedAssets = DataToDisplay->AssetName.ToString();
+	//this returns a whole row of assets.
 	TSharedRef<STableRow<TSharedPtr<FAssetData>>> ListRow = SNew(STableRow<TSharedPtr<FAssetData>>, OwnerTable)
 	[
-		SNew(STextBlock)
+
+	
+		SNew(SHorizontalBox)
+		+ SHorizontalBox::Slot()
+		  .HAlign(HAlign_Left)
+		  .VAlign(VAlign_Center)
+		  .FillWidth(.5f)
+		  [
+		  	ConstructCheckBox(DataToDisplay)
+		  	]
+
+		  	
+		  	+SHorizontalBox::Slot()
+		  	[		SNew(STextBlock)
 		.Text(FText::FromString(NamedAssets))
+		  		]
+
 	];
 
 	return ListRow;
+}
+
+TSharedRef<SCheckBox> SAdvancedDeletionTab::ConstructCheckBox(const TSharedPtr<FAssetData>& DataToDisplay) const
+{
+	TSharedRef<SCheckBox> ConstructCheckBox = SNew(SCheckBox)
+		.Type(ESlateCheckBoxType::CheckBox);
+	return ConstructCheckBox;
 }

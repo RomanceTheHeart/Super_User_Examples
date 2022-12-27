@@ -7,23 +7,28 @@
 // create a construction function.
 class SAdvancedDeletionTab : public SCompoundWidget
 {
-	SLATE_BEGIN_ARGS(SAdvancedDeletionTab){}
-	
-	SLATE_ARGUMENT(FString,TitleString)
-	
-	//Create a list that will be passed onto the slatewidget.
-	SLATE_ARGUMENT(TArray<TSharedPtr<FAssetData>>,SharedDataArray)
-	
+	SLATE_BEGIN_ARGS(SAdvancedDeletionTab)
+		{
+		}
+
+		SLATE_ARGUMENT(FString, TitleString)
+
+		//Create a list that will be passed onto the slatewidget.
+		SLATE_ARGUMENT(TArray<TSharedPtr<FAssetData>>, SharedDataArray)
+
 	SLATE_END_ARGS()
+
 public:
 	void Construct(const FArguments Args);
 private:
-	
+	//This will be where more functions to organise the code will be housed.
 	//Data will be passed into this array from the AdvancedManager.
 	TArray<TSharedPtr<FAssetData>> GetPackageAssetsArray;
-	
-	//This delegate function is used to passed data to the widget.
-	TSharedRef<ITableRow>GenerateRowForList(TSharedPtr<FAssetData>DataToDisplay
-		,const TSharedRef<STableViewBase>& OwnerTable) const;
 
+	//This delegate function is used to passed data to the widget.
+	TSharedRef<ITableRow> GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay
+	                                         , const TSharedRef<STableViewBase>& OwnerTable) const;
+
+	TSharedRef<SCheckBox> ConstructCheckBox(const TSharedPtr<FAssetData>&DataToDisplay) const;
+	//CheckBoxStateChanged true/false
 };
