@@ -26,9 +26,10 @@ private:
 	TArray<TSharedPtr<FAssetData>> GetPackageAssetsArray;
 
 	//This delegate function is used to passed data to the widget.
-	TSharedRef<ITableRow> GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay
-	                                         , const TSharedRef<STableViewBase>& OwnerTable) const;
+	TSharedRef<ITableRow> GenerateRowForList(TSharedPtr<FAssetData>DataToDisplay
+	                                         , const TSharedRef<STableViewBase>& OwnerTable);
 
-	TSharedRef<SCheckBox> ConstructCheckBox(const TSharedPtr<FAssetData>&DataToDisplay) const;
+	TSharedRef<SCheckBox> ConstructCheckBox(const TSharedPtr<FAssetData>&DataToDisplay);
 	//CheckBoxStateChanged true/false
+	void CheckBoxChangeState(ECheckBoxState CurrentBoxSate, TSharedPtr<FAssetData>Data);
 };

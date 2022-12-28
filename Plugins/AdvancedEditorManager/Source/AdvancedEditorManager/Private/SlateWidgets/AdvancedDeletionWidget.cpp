@@ -2,8 +2,8 @@
 
 
 #include "SlateWidgets/AdvancedDeletionWidget.h"
+#include "DebugHeader.h"
 #include "SlateBasics.h"
-
 #include "AssetViewUtils.h"
 
 void SAdvancedDeletionTab::Construct(const FArguments Args)
@@ -54,7 +54,7 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 }
 
 TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay,
-                                                               const TSharedRef<STableViewBase>& OwnerTable) const
+                                                               const TSharedRef<STableViewBase>& OwnerTable) 
 {
 	//This function returns list of tsharedrefferences to sharedptr fasset data. 
 	// DataToDisplay returns a shared pointer so, we can directly access it's contents.
@@ -64,30 +64,50 @@ TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAsset
 	TSharedRef<STableRow<TSharedPtr<FAssetData>>> ListRow = SNew(STableRow<TSharedPtr<FAssetData>>, OwnerTable)
 	[
 
-	
+
 		SNew(SHorizontalBox)
 		+ SHorizontalBox::Slot()
 		  .HAlign(HAlign_Left)
 		  .VAlign(VAlign_Center)
 		  .FillWidth(.5f)
-		  [
-		  	ConstructCheckBox(DataToDisplay)
-		  	]
+		[
+			ConstructCheckBox(DataToDisplay)
+		]
 
-		  	
-		  	+SHorizontalBox::Slot()
-		  	[		SNew(STextBlock)
-		.Text(FText::FromString(NamedAssets))
-		  		]
+
+		+ SHorizontalBox::Slot()
+		[SNew(STextBlock)
+			.Text(FText::FromString(NamedAssets))
+		]
 
 	];
 
 	return ListRow;
 }
 
-TSharedRef<SCheckBox> SAdvancedDeletionTab::ConstructCheckBox(const TSharedPtr<FAssetData>& DataToDisplay) const
+TSharedRef<SCheckBox> SAdvancedDeletionTab::ConstructCheckBox(const TSharedPtr<FAssetData>& DataToDisplay) 
 {
 	TSharedRef<SCheckBox> ConstructCheckBox = SNew(SCheckBox)
-		.Type(ESlateCheckBoxType::CheckBox);
+		.Type(ESlateCheckBoxType::CheckBox)
+	.OnCheckStateChanged(this, &SAdvancedDeletionTab::CheckBoxChangeState, DataToDisplay)
+	.Visibility(EVisibility::Visible);
 	return ConstructCheckBox;
+}
+
+void SAdvancedDeletionTab::CheckBoxChangeState(ECheckBoxState CurrentBoxSate, TSharedPtr<FAssetData> Data)
+{
+	switch (CurrentBoxSate)
+	{
+	case ECheckBoxState::Unchecked:
+
+		Print(Data->AssetName.ToString() + TEXT(" is unchecked "), FColor::Red);
+		break;
+	case ECheckBoxState::Checked:
+		Print(Data->AssetName.ToString() + TEXT(" is checked "), FColor::Green);
+		break;
+	case ECheckBoxState::Undetermined:
+
+		break;
+	default: ;
+	}
 }
