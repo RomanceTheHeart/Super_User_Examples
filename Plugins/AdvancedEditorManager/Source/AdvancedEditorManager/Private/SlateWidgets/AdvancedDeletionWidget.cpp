@@ -5,6 +5,7 @@
 #include "DebugHeader.h"
 #include "SlateBasics.h"
 #include "AssetViewUtils.h"
+#include "Animation/AnimCompositeBase.h"
 
 void SAdvancedDeletionTab::Construct(const FArguments Args)
 {
@@ -54,11 +55,12 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 }
 
 TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay,
-                                                               const TSharedRef<STableViewBase>& OwnerTable) 
+                                                               const TSharedRef<STableViewBase>& OwnerTable)
 {
-	//This function returns list of tsharedrefferences to sharedptr fasset data. 
+	//This function creates horizontal rows of multiboxes. 
 	// DataToDisplay returns a shared pointer so, we can directly access it's contents.
-	// This one is tricky. Needs more attention. 
+
+	const FString ClassName = DataToDisplay->AssetClass.ToString();
 	const FString NamedAssets = DataToDisplay->AssetName.ToString();
 	//this returns a whole row of assets.
 	TSharedRef<STableRow<TSharedPtr<FAssetData>>> ListRow = SNew(STableRow<TSharedPtr<FAssetData>>, OwnerTable)
@@ -66,6 +68,8 @@ TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAsset
 
 
 		SNew(SHorizontalBox)
+
+		//First slot reserved for a checkbox widget. 
 		+ SHorizontalBox::Slot()
 		  .HAlign(HAlign_Left)
 		  .VAlign(VAlign_Center)
@@ -74,18 +78,28 @@ TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAsset
 			ConstructCheckBox(DataToDisplay)
 		]
 
-
+		//Second slot is reserved for displaying asset class names.
 		+ SHorizontalBox::Slot()
 		[SNew(STextBlock)
 			.Text(FText::FromString(NamedAssets))
 		]
+
+		//Third slot reserved for displaying assets names.
+
+		+ SHorizontalBox::Slot()
+		[
+			//SNew(STextBlock).Text(FText::FromString(ClassName))
+			ConstructTextRowForWidget(ClassName)
+
+		]
+		// The forth slot is reserved for controls. 
 
 	];
 
 	return ListRow;
 }
 
-TSharedRef<SCheckBox> SAdvancedDeletionTab::ConstructCheckBox(const TSharedPtr<FAssetData>& DataToDisplay) 
+TSharedRef<SCheckBox> SAdvancedDeletionTab::ConstructCheckBox(const TSharedPtr<FAssetData>& DataToDisplay)
 {
 	TSharedRef<SCheckBox> ConstructCheckBox = SNew(SCheckBox)
 		.Type(ESlateCheckBoxType::CheckBox)
@@ -110,4 +124,19 @@ void SAdvancedDeletionTab::CheckBoxChangeState(ECheckBoxState CurrentBoxSate, TS
 		break;
 	default: ;
 	}
+}
+
+TSharedRef<STextBlock> SAdvancedDeletionTab::ConstructTextRowForWidget(const FString& TextContent)
+{
+
+	FSlateFontInfo WidgetText = FCoreStyle::Get().GetFontStyle(FName("RegularText"));
+	WidgetText.Size =13.0f;
+	
+	TSharedRef<STextBlock> TextBlock = 	SNew(STextBlock).
+	Text(FText::FromString(TextContent))
+	.Font(WidgetText)
+	.ColorAndOpacity(FColor::White);
+	
+
+	return  TextBlock; 
 }

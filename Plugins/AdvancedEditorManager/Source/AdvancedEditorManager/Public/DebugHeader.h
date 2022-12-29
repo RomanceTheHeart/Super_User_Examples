@@ -4,7 +4,7 @@
 #include "Framework/Notifications/NotificationManager.h"
 #include "Widgets/Notifications/SNotificationList.h"
 
-#define Print(String,Color)if(GEngine) GEngine->AddOnScreenDebugMessage(-1,300.0,Color,String)
+#define Print(String,Color)if(GEngine) GEngine->AddOnScreenDebugMessage(1,300.0,Color,String)
 #define PrintLog(String) UE_LOG(LogTemp,Warning,TEXT("%s"),*String);
 
 namespace Debug
