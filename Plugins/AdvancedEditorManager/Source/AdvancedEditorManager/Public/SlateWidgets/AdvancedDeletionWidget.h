@@ -21,6 +21,7 @@ class SAdvancedDeletionTab : public SCompoundWidget
 public:
 	void Construct(const FArguments Args);
 private:
+		FSlateFontInfo GetTextType(){return   FCoreStyle::Get().GetFontStyle(FName("NormalText"));}
 	//This will be where more functions to organise the code will be housed.
 	//Data will be passed into this array from the AdvancedManager.
 	TArray<TSharedPtr<FAssetData>> GetPackageAssetsArray;

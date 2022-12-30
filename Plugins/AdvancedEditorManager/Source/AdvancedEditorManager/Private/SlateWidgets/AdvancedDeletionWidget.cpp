@@ -11,7 +11,7 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 {
 	bCanSupportFocus = {true};
 	FSlateFontInfo TitleTextInfo = FCoreStyle::Get().GetFontStyle(FName("EmbossedText"));
-	TitleTextInfo.Size = 15;
+	TitleTextInfo.Size = 14;
 
 	//Store asset data passed into this widget.
 	GetPackageAssetsArray = Args._SharedDataArray;
@@ -62,8 +62,8 @@ TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAsset
 
 	const FString ClassName = DataToDisplay->AssetClass.ToString();
 	const FString NamedAssets = DataToDisplay->AssetName.ToString();
-	//this returns a whole row of assets.
-	TSharedRef<STableRow<TSharedPtr<FAssetData>>> ListRow = SNew(STableRow<TSharedPtr<FAssetData>>, OwnerTable)
+	//Construct a row of FAssetData. 
+	TSharedRef<STableRow<TSharedPtr<FAssetData>>> ListRow = SNew(STableRow<TSharedPtr<FAssetData>>, OwnerTable).Padding(FMargin(3.0f))
 	[
 
 
@@ -72,14 +72,17 @@ TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAsset
 		//First slot reserved for a checkbox widget. 
 		+ SHorizontalBox::Slot()
 		  .HAlign(HAlign_Left)
-		  .VAlign(VAlign_Center)
-		  .FillWidth(.5f)
+		  .VAlign(VAlign_Fill)
+		  .FillWidth(.1f)
 		[
 			ConstructCheckBox(DataToDisplay)
 		]
 
 		//Second slot is reserved for displaying asset class names.
 		+ SHorizontalBox::Slot()
+		  .HAlign(HAlign_Left)
+		  .VAlign(VAlign_Center)
+		  .FillWidth(.1f)
 		[SNew(STextBlock)
 			.Text(FText::FromString(NamedAssets))
 		]
@@ -87,6 +90,9 @@ TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAsset
 		//Third slot reserved for displaying assets names.
 
 		+ SHorizontalBox::Slot()
+		  .HAlign(HAlign_Center)
+		  .VAlign(VAlign_Fill)
+		  .FillWidth(.5f)
 		[
 			//SNew(STextBlock).Text(FText::FromString(ClassName))
 			ConstructTextRowForWidget(ClassName)
@@ -128,15 +134,14 @@ void SAdvancedDeletionTab::CheckBoxChangeState(ECheckBoxState CurrentBoxSate, TS
 
 TSharedRef<STextBlock> SAdvancedDeletionTab::ConstructTextRowForWidget(const FString& TextContent)
 {
+	FSlateFontInfo WidgetText = GetTextType();
+	WidgetText.Size = 12.0f;
 
-	FSlateFontInfo WidgetText = FCoreStyle::Get().GetFontStyle(FName("RegularText"));
-	WidgetText.Size =13.0f;
-	
-	TSharedRef<STextBlock> TextBlock = 	SNew(STextBlock).
+	TSharedRef<STextBlock> TextBlock = SNew(STextBlock).
 	Text(FText::FromString(TextContent))
 	.Font(WidgetText)
 	.ColorAndOpacity(FColor::White);
-	
 
-	return  TextBlock; 
+
+	return TextBlock;
 }
