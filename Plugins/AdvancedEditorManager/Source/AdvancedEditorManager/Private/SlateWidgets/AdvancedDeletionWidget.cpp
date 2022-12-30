@@ -169,6 +169,7 @@ FReply SAdvancedDeletionTab::DeleteButtonClicked(TSharedPtr<FAssetData> Selected
 	{
 		//refresh list. 
 	}
+	
 	//This replay event needs to return another value. 
 
 	return FReply::Handled();
