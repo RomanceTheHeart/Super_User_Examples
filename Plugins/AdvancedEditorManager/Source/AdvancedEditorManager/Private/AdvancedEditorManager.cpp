@@ -6,6 +6,7 @@
 #include "ContentBrowserModule.h"
 #include "DebugHeader.h"
 #include "EditorAssetLibrary.h"
+#include "ObjectTools.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "SlateWidgets/AdvancedDeletionWidget.h"
 
@@ -171,8 +172,9 @@ TSharedRef<SDockTab> FAdvancedEditorManagerModule::SpawnDeletionTab(const FSpawn
 {
 	return SNew(SDockTab).TabRole(ETabRole::NomadTab)
 	[
+		//Called from the AdvancedDeletionWidget.
 		SNew(SAdvancedDeletionTab)
-		.TitleString(TEXT("String"))
+		.TitleString(TEXT("TitleText"))
 		.SharedDataArray(ReturnPackageAssets())
 	];
 }
@@ -203,7 +205,23 @@ TArray<TSharedPtr<FAssetData>> FAdvancedEditorManagerModule::ReturnPackageAssets
 	}
 return  SelectedAssets;
 }
+
+
 #pragma endregion
+
+#pragma region ProccessAdvancedDeletionWidget
+
+bool FAdvancedEditorManagerModule::DeleteSingleAssetFromList(const FAssetData& DataToDelete)
+{
+	TArray<FAssetData>DataToDeleteArray;
+	DataToDeleteArray.Emplace(DataToDelete);
+	if(ObjectTools::DeleteAssets(DataToDeleteArray) > 0)
+	{
+		return true;
+	}
+	return false; 
+}
+#pragma endregion 
 
 #undef LOCTEXT_NAMESPACE
 

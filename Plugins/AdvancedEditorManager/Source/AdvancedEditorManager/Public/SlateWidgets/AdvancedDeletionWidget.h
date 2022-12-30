@@ -21,7 +21,7 @@ class SAdvancedDeletionTab : public SCompoundWidget
 public:
 	void Construct(const FArguments Args);
 private:
-		FSlateFontInfo GetTextType(){return   FCoreStyle::Get().GetFontStyle(FName("NormalText"));}
+		FSlateFontInfo GetTextType(){return   FCoreStyle::Get().GetFontStyle(FName("EmbossedText"));}
 	//This will be where more functions to organise the code will be housed.
 	//Data will be passed into this array from the AdvancedManager.
 	TArray<TSharedPtr<FAssetData>> GetPackageAssetsArray;
@@ -36,4 +36,7 @@ private:
 	void CheckBoxChangeState(ECheckBoxState CurrentBoxSate, TSharedPtr<FAssetData> Data);
 
 	TSharedRef<STextBlock> ConstructTextRowForWidget(const FString& TextContent);
+
+	TSharedRef<SButton>ConstructButtonForWidget(const TSharedPtr<FAssetData> Data);
+	FReply DeleteButtonClicked(TSharedPtr<FAssetData>SelectedData);
 };

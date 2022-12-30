@@ -2,6 +2,8 @@
 
 
 #include "SlateWidgets/AdvancedDeletionWidget.h"
+
+#include "AdvancedEditorManager.h"
 #include "DebugHeader.h"
 #include "SlateBasics.h"
 #include "AssetViewUtils.h"
@@ -10,8 +12,8 @@
 void SAdvancedDeletionTab::Construct(const FArguments Args)
 {
 	bCanSupportFocus = {true};
-	FSlateFontInfo TitleTextInfo = FCoreStyle::Get().GetFontStyle(FName("EmbossedText"));
-	TitleTextInfo.Size = 14;
+	FSlateFontInfo TitleTextInfo = GetTextType();
+	TitleTextInfo.Size = 12;
 
 	//Store asset data passed into this widget.
 	GetPackageAssetsArray = Args._SharedDataArray;
@@ -28,13 +30,8 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 			.Justification(ETextJustify::Center)
 			.ColorAndOpacity(FColor::White)
 		]
-		//This second slot is used to specify the list condition along with help text.
-		+ SVerticalBox::Slot()
-		.AutoHeight()
-		[
-			SNew(SHorizontalBox)
-		]
-		//This third slot is used to list various asset.
+
+
 		+ SVerticalBox::Slot()
 		.VAlign(EVerticalAlignment::VAlign_Fill)
 		[SNew(SScrollBox)
@@ -46,61 +43,67 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 				.OnGenerateRow(this, &SAdvancedDeletionTab::GenerateRowForList)
 			]
 		]
-		// This fourth slot is used to create three buttons.
-		+ SVerticalBox::Slot()
-		.AutoHeight()
-		[SNew(SHorizontalBox)
-		]
+
 	];
 }
 
 TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay,
                                                                const TSharedRef<STableViewBase>& OwnerTable)
 {
-	//This function creates horizontal rows of multiboxes. 
+	//This function creates horizontal rows of multi-boxes. 
 	// DataToDisplay returns a shared pointer so, we can directly access it's contents.
 
 	const FString ClassName = DataToDisplay->AssetClass.ToString();
 	const FString NamedAssets = DataToDisplay->AssetName.ToString();
 	//Construct a row of FAssetData. 
-	TSharedRef<STableRow<TSharedPtr<FAssetData>>> ListRow = SNew(STableRow<TSharedPtr<FAssetData>>, OwnerTable).Padding(FMargin(3.0f))
-	[
-
-
-		SNew(SHorizontalBox)
-
-		//First slot reserved for a checkbox widget. 
-		+ SHorizontalBox::Slot()
-		  .HAlign(HAlign_Left)
-		  .VAlign(VAlign_Fill)
-		  .FillWidth(.1f)
+	TSharedRef<STableRow<TSharedPtr<FAssetData>>> ListRow = SNew(STableRow<TSharedPtr<FAssetData>>, OwnerTable).
+		Padding(FMargin(3.0f))
 		[
-			ConstructCheckBox(DataToDisplay)
-		]
 
-		//Second slot is reserved for displaying asset class names.
-		+ SHorizontalBox::Slot()
-		  .HAlign(HAlign_Left)
-		  .VAlign(VAlign_Center)
-		  .FillWidth(.1f)
-		[SNew(STextBlock)
-			.Text(FText::FromString(NamedAssets))
-		]
 
-		//Third slot reserved for displaying assets names.
+			SNew(SHorizontalBox)
 
-		+ SHorizontalBox::Slot()
-		  .HAlign(HAlign_Center)
-		  .VAlign(VAlign_Fill)
-		  .FillWidth(.5f)
-		[
-			//SNew(STextBlock).Text(FText::FromString(ClassName))
-			ConstructTextRowForWidget(ClassName)
+			//First slot reserved for a checkbox widget. 
+			+ SHorizontalBox::Slot()
+			  .HAlign(HAlign_Left)
+			  .VAlign(VAlign_Fill)
+			  .FillWidth(.09f)
+			[
+				ConstructCheckBox(DataToDisplay)
+			]
 
-		]
-		// The forth slot is reserved for controls. 
+			//Second slot is reserved for displaying asset class names.
+			+ SHorizontalBox::Slot()
+			  .HAlign(HAlign_Left)
+			  .VAlign(VAlign_Center)
+			  .FillWidth(.2f)
+			[SNew(STextBlock)
+				.Text(FText::FromString(NamedAssets))
+			]
 
-	];
+			//Third slot reserved for displaying assets names.
+
+			+ SHorizontalBox::Slot()
+			  .HAlign(HAlign_Center)
+			  .VAlign(VAlign_Fill)
+			  .FillWidth(.5f)
+			[
+				//SNew(STextBlock).Text(FText::FromString(ClassName))
+				//TODO. Create a function that controlls the text style. 
+				ConstructTextRowForWidget(ClassName)
+
+			]
+			// The forth slot is reserved for controls.
+			+ SHorizontalBox::Slot()
+			  .HAlign(HAlign_Right)
+			  .VAlign(VAlign_Fill)
+			  .FillWidth(.1)
+
+			[
+				ConstructButtonForWidget(DataToDisplay)
+			]
+
+		];
 
 	return ListRow;
 }
@@ -144,4 +147,29 @@ TSharedRef<STextBlock> SAdvancedDeletionTab::ConstructTextRowForWidget(const FSt
 
 
 	return TextBlock;
+}
+
+TSharedRef<SButton> SAdvancedDeletionTab::ConstructButtonForWidget(const TSharedPtr<FAssetData> Data)
+{
+	TSharedRef<SButton> NewButtonEvent = SNew(SButton)
+	.Text(FText::FromString(TEXT("Delete")))
+	.OnClicked(this, &SAdvancedDeletionTab::DeleteButtonClicked, Data);
+
+	return NewButtonEvent;
+}
+
+FReply SAdvancedDeletionTab::DeleteButtonClicked(TSharedPtr<FAssetData> SelectedData)
+{
+	Print(SelectedData->AssetName.ToString() + TEXT("is being removed..."),FColor::Emerald);
+	//Load a reference to the current Manager Module
+	FAdvancedEditorManagerModule& AdvancedManagerModule = FModuleManager::LoadModuleChecked<
+		FAdvancedEditorManagerModule>(TEXT("AdvancedEditorManager"));
+	
+	if (const bool AssetDeleted = AdvancedManagerModule.DeleteSingleAssetFromList(*SelectedData.Get()))
+	{
+		//refresh list. 
+	}
+	//This replay event needs to return another value. 
+
+	return FReply::Handled();
 }

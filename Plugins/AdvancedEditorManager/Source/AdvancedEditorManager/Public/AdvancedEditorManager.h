@@ -15,7 +15,7 @@ public:
 
 #pragma region MenuExtention
 private:
-	TArray<FString>FolderAssetLocations = {"/Game"};
+	TArray<FString> FolderAssetLocations = {"/Game"};
 
 	uint32 NumberAssets = {0};
 	void Init_MenuExtention();
@@ -29,10 +29,16 @@ private:
 
 
 #pragma region NomadTab
-void RegisterAdvancedDeletion_Protocol();
-TSharedRef<SDockTab>SpawnDeletionTab(const FSpawnTabArgs& spawner);
-void AdvancedDelete();
+	void RegisterAdvancedDeletion_Protocol();
+	TSharedRef<SDockTab> SpawnDeletionTab(const FSpawnTabArgs& spawner);
+	void AdvancedDelete();
 
-TArray<TSharedPtr<FAssetData>>ReturnPackageAssets();
-#pragma endregion 
+	TArray<TSharedPtr<FAssetData>> ReturnPackageAssets();
+#pragma endregion
+
+public:
+#pragma region ProccessAdvancedDeletionWidget
+
+	bool DeleteSingleAssetFromList(const FAssetData& DataToDelete);
+#pragma endregion
 };
