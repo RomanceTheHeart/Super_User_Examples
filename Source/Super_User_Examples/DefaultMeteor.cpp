@@ -1,15 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MyActor.h"
 
-#include <variant>
 
+#include "DefaultMeteor.h"
 #include "UObject/UObjectIterator.h"
 #include "EngineUtils.h"
 #include "Super_Config.h"
 #include "Components/StaticMeshComponent.h"
-#include "Elements/Interfaces/TypedElementObjectInterface.h"
 #include "Engine/EngineTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Super_Config.h"
@@ -19,7 +17,7 @@
 #include "SceneQueries/SceneSnappingManager.h"
 
 // Sets default values
-AMyActor::AMyActor()
+ADefaultMeteor::ADefaultMeteor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -31,7 +29,9 @@ AMyActor::AMyActor()
 
 
 	SetRootComponent(CollisionSphere);
-	
+	Collection = CreateDefaultSubobject<UGeometryCollection>(TEXT("Collection"));
+	ComponentCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("CollectionComponent"));
+	ComponentCollection->SetRestCollection(Collection);
 	
 	Mesh_1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootMeshComonent"));
 	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(
@@ -51,7 +51,7 @@ AMyActor::AMyActor()
 }
 
 // Called when the game starts or when spawned
-void AMyActor::BeginPlay()
+void ADefaultMeteor::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -98,7 +98,7 @@ void AMyActor::BeginPlay()
 }
 
 // Called every frame
-void AMyActor::Tick(float DeltaTime)
+void ADefaultMeteor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }

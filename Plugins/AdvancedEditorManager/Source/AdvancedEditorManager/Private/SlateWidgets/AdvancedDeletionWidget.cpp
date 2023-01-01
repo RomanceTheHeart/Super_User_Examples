@@ -14,7 +14,7 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 	FSlateFontInfo TitleTextInfo = GetTextType();
 	TitleTextInfo.Size = 12;
 
-	//Store asset data passed into this widget.
+	//Store asset data passed into this array.
 	GetPackageAssetsArray = Args._SharedDataArray;
 
 	//Create a slot to place objects

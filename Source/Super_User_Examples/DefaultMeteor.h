@@ -10,10 +10,10 @@
 #include "GeometryCollection/GeometryCollectionActor.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
 #include "GeometryCollection/GeometryCollectionObject.h"
-#include "MyActor.generated.h"
+#include "DefaultMeteor.generated.h"
 
 UCLASS()
-class SUPER_USER_EXAMPLES_API AMyActor : public AActor
+class SUPER_USER_EXAMPLES_API ADefaultMeteor : public AActor
 {
 	GENERATED_BODY()
 
@@ -23,8 +23,12 @@ private:
 	USphereComponent* CollisionSphere;
 
 
-	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
-	UGeometryCollection* Collection*/;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
+	UGeometryCollection* Collection;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
+	UGeometryCollectionComponent* ComponentCollection; 
+
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh_1;
@@ -44,7 +48,7 @@ private:
 	
 public:
 	// Sets default values for this actor's properties
-	AMyActor();
+	ADefaultMeteor();
 	UPROPERTY()
 	UMaterialInterface* Material;
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MyActor.h"
+#include "DefaultMeteor.h"
 #include "GameFramework/GameModeBase.h"
 #include "MiniProjects.generated.h"
 
@@ -22,9 +22,9 @@ private:
 	FTimerHandle DestroyTimer;
 public:
 	UPROPERTY()
-	class AMyActor* SpawnedActor;
+	class ADefaultMeteor* SpawnedActor;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn_Actor", meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<AMyActor> SpawnedActor_BP = nullptr;
+	TSubclassOf<ADefaultMeteor> SpawnedActor_BP = nullptr;
 
 	UFUNCTION()
 	void DestroyActor();

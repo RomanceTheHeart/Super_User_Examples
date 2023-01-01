@@ -2,7 +2,7 @@
 
 
 #include "MiniProjects.h"
-#include "MyActor.h"
+#include "DefaultMeteor.h"
 #include "Super_Config.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -38,7 +38,7 @@ void AMiniProjects::BeginPlay()
 
 		if (GetWorld() != nullptr)
 		{
-			SpawnedActor = GetWorld()->SpawnActor<AMyActor>(SpawnedActor_BP, newspawnvector, FRotator(0, 0, 0),
+			SpawnedActor = GetWorld()->SpawnActor<ADefaultMeteor>(SpawnedActor_BP, newspawnvector, FRotator(0, 0, 0),
 			                                                SpawnParameters);
 
 			SpawnedActor->SetSpawnLocation(newspawnvector + SpawnedActor->GetActorLocation());
@@ -58,7 +58,7 @@ void AMiniProjects::BeginPlay()
 		//This Works. Just Adjust the scaler-Function to form a pyramid. 
 
 		const FVector newspawnvector_2 = FVector(X_Offset, Y_Offset, Z_Offset);
-		SpawnedActor = GetWorld()->SpawnActor<AMyActor>(SpawnedActor_BP, newspawnvector_2,
+		SpawnedActor = GetWorld()->SpawnActor<ADefaultMeteor>(SpawnedActor_BP, newspawnvector_2,
 		                                                FRotator(0, 0, 0),
 		                                                SpawnParameters);
 		SpawnedActor->SetSpawnLocation(newspawnvector_2 + SpawnedActor->GetActorLocation());

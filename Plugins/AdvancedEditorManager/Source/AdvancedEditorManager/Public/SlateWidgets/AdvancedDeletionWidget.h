@@ -15,7 +15,7 @@ public:
 
 		SLATE_ARGUMENT(FString, TitleString)
 
-		//Create a list that will be passed onto the slatewidget.
+		//Create an data array that will be passed inyo this SCompoundWidget. 
 		SLATE_ARGUMENT(TArray<TSharedPtr<FAssetData>>, SharedDataArray)
 
 	SLATE_END_ARGS()
