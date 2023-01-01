@@ -7,6 +7,8 @@
 // create a construction function.
 class SAdvancedDeletionTab : public SCompoundWidget
 {
+	
+public:
 	SLATE_BEGIN_ARGS(SAdvancedDeletionTab)
 		{
 		}
@@ -18,14 +20,20 @@ class SAdvancedDeletionTab : public SCompoundWidget
 
 	SLATE_END_ARGS()
 
-public:
 	void Construct(const FArguments Args);
+
 private:
-		FSlateFontInfo GetTextType(){return   FCoreStyle::Get().GetFontStyle(FName("EmbossedText"));}
+
 	//This will be where more functions to organise the code will be housed.
 	//Data will be passed into this array from the AdvancedManager.
 	TArray<TSharedPtr<FAssetData>> GetPackageAssetsArray;
 
+
+	//List View pointer. 
+	TSharedPtr<SListView<TSharedPtr<FAssetData>>> AssetListView;
+	//construct a list of shared references of shared pointers of assetData. 
+	TSharedRef<SListView<TSharedPtr<FAssetData>>>ConstructViewListForAssets();
+	
 	//This delegate function is used to passed data to the widget.
 	TSharedRef<ITableRow> GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay
 	                                         , const TSharedRef<STableViewBase>& OwnerTable);
@@ -39,4 +47,9 @@ private:
 
 	TSharedRef<SButton>ConstructButtonForWidget(const TSharedPtr<FAssetData> Data);
 	FReply DeleteButtonClicked(TSharedPtr<FAssetData>SelectedData);
+
+	void RefreshListView(); //Refresh Listview after deletion. 
+	FSlateFontInfo GetTextType(){return   FCoreStyle::Get().GetFontStyle(FName("EmbossedText"));}
 };
+
+

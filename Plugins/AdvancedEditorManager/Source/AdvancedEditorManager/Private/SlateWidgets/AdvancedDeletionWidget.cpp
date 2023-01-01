@@ -2,7 +2,6 @@
 
 
 #include "SlateWidgets/AdvancedDeletionWidget.h"
-
 #include "AdvancedEditorManager.h"
 #include "DebugHeader.h"
 #include "SlateBasics.h"
@@ -37,15 +36,17 @@ void SAdvancedDeletionTab::Construct(const FArguments Args)
 		[SNew(SScrollBox)
 			+ SScrollBox::Slot()
 			[
-				SNew(SListView<TSharedPtr<FAssetData>>)
+				/*SNew(SListView<TSharedPtr<FAssetData>>)
 				.ItemHeight(24.0f)
 				.ListItemsSource(&GetPackageAssetsArray)
-				.OnGenerateRow(this, &SAdvancedDeletionTab::GenerateRowForList)
+				.OnGenerateRow(this, &SAdvancedDeletionTab::GenerateRowForList)*/
+				ConstructViewListForAssets()
 			]
 		]
 
 	];
 }
+
 
 TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAssetData> DataToDisplay,
                                                                const TSharedRef<STableViewBase>& OwnerTable)
@@ -107,6 +108,14 @@ TSharedRef<ITableRow> SAdvancedDeletionTab::GenerateRowForList(TSharedPtr<FAsset
 
 	return ListRow;
 }
+TSharedRef<SListView<TSharedPtr<FAssetData>>>SAdvancedDeletionTab::ConstructViewListForAssets()
+{
+	AssetListView = SNew(SListView<TSharedPtr<FAssetData>>) //This returns a TShared pointer.
+	.ItemHeight(24.0f)
+	.ListItemsSource(&GetPackageAssetsArray)
+	.OnGenerateRow(this,&SAdvancedDeletionTab::GenerateRowForList);
+	return AssetListView.ToSharedRef();
+}
 
 TSharedRef<SCheckBox> SAdvancedDeletionTab::ConstructCheckBox(const TSharedPtr<FAssetData>& DataToDisplay)
 {
@@ -167,10 +176,22 @@ FReply SAdvancedDeletionTab::DeleteButtonClicked(TSharedPtr<FAssetData> Selected
 	
 	if (const bool AssetDeleted = AdvancedManagerModule.DeleteSingleAssetFromList(*SelectedData.Get()))
 	{
-		//refresh list. 
+		if(GetPackageAssetsArray.Contains(SelectedData))
+			GetPackageAssetsArray.Remove(SelectedData);
+		
 	}
+	RefreshListView();
 	
 	//This replay event needs to return another value. 
 
 	return FReply::Handled();
+}
+
+void SAdvancedDeletionTab::RefreshListView()
+{
+	if(AssetListView.IsValid())
+	{
+		AssetListView->RebuildList();
+	}
+	
 }
