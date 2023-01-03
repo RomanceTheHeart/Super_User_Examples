@@ -25,31 +25,25 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	UGeometryCollection* Collection;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
-	UGeometryCollectionComponent* ComponentCollection; 
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
+	UGeometryCollectionComponent* ComponentCollection;
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh_1;
-	
 
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	FVector CurrentLocation {FVector::ZeroVector};
+	FVector CurrentLocation{FVector::ZeroVector};
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	FVector Direction{FVector::ZeroVector};
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	float Speed{0.0f};
-	
 
-
-
-
-	
+	TArray<AStaticMeshActor*> StaticMeshActors;
 public:
-	
 	ADefaultMeteor();
 	UPROPERTY()
 	UMaterialInterface* Material;
@@ -57,11 +51,11 @@ public:
 	UPROPERTY()
 	UMaterialInstanceDynamic* Dissolve_Material;
 	FVector GetMeteorVector() const { return Direction; }
-	UFUNCTION(BlueprintCallable,Category ="Meteor Settings")
+	UFUNCTION(BlueprintCallable, Category ="Meteor Settings")
 	USphereComponent* GetRoot() { return CollisionSphere; }
+
 protected:
 	virtual void BeginPlay() override;
-
 
 
 public:

@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
-
 #include "DefaultMeteor.h"
 #include "UObject/UObjectIterator.h"
 #include "EngineUtils.h"
@@ -32,7 +30,7 @@ ADefaultMeteor::ADefaultMeteor()
 	Collection = CreateDefaultSubobject<UGeometryCollection>(TEXT("Collection"));
 	ComponentCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("CollectionComponent"));
 	ComponentCollection->SetRestCollection(Collection);
-	
+
 	Mesh_1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootMeshComonent"));
 	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(
 		TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
@@ -46,8 +44,10 @@ ADefaultMeteor::ADefaultMeteor()
 		"MaterialInstanceConstant'/Game/Material_Examples/M_MasterRockMaterial_Inst.M_MasterRockMaterial_Inst'"));
 	Material = asset.Object;
 	Mesh_1->SetMaterial(0, Material);
-Speed = 1;
 
+	///Other Variable Intializations//
+	Speed = 1;
+	FVector ImpLuseVector = (CurrentLocation + (Direction) * Speed);
 }
 
 // Called when the game starts or when spawned
@@ -55,7 +55,8 @@ void ADefaultMeteor::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	CurrentLocation = CollisionSphere->GetComponentLocation();
+	CurrentLocation.Normalize();
 	//PrintLog(CollisionSphere->GetName());
 	CollisionSphere->SetSimulatePhysics(true);
 	Material = Mesh_1->GetMaterial(1);
@@ -69,30 +70,39 @@ void ADefaultMeteor::BeginPlay()
 	//////////Get Objects Around Me //////////
 	if (this != nullptr)
 	{
-		for (TActorIterator<AStaticMeshActor> Itr(GetWorld()); Itr; ++Itr)
+		for (TActorIterator<AActor> Itr(GetWorld()); Itr; ++Itr)
 		{
 			int32 counter{0};
 			counter++;
-			const AStaticMeshActor* StaticMeshActor = Cast<AStaticMeshActor>(*Itr);
+			AStaticMeshActor* StaticMeshActor = Cast<AStaticMeshActor>(*Itr);
 			if (StaticMeshActor)
-				if (StaticMeshActor != GetActor())
-					if (StaticMeshActor->GetRootComponent()->ComponentHasTag("Floor_1"))
-					{
-						//Print(StaticMeshActor->GetActorLocation().ToString(),FColor::Blue);
-						Direction = this->GetActorLocation();
-						FVector ImpLuseVector = (Direction - StaticMeshActor->
-						                                     GetActorLocation()) * Speed;
-						Direction.Normalize();
-						CollisionSphere->AddImpulse(ImpLuseVector, EName::None, true);
+				StaticMeshActors.Emplace(StaticMeshActor);
 
-						FRotator plusRotation = {0, 0, 360};
-						FRotator minusRotation = {0, 0, -360}; 
-						SetActorRotation(plusRotation);
-						AddActorLocalRotation(minusRotation);
-						CollisionSphere->AddLocalOffset(FMath::Lerp(Direction,
-						                                            StaticMeshActor->GetActorLocation(),
-						                                            .3f));
-					}
+
+			for (AStaticMeshActor* actor : StaticMeshActors)
+			{
+				if (GEngine)
+					GEngine->AddOnScreenDebugMessage(1, 300.0, FColor::Green,
+					                                 (TEXT("%s"), actor->GetName()));
+				if (GEngine)
+					GEngine->AddOnScreenDebugMessage(1, 300.0, FColor::Green,
+					                                 (TEXT("%d"), FString::FromInt(StaticMeshActors.Num())));
+
+
+				FVector staticmeshlocation = actor->GetActorLocation();
+				staticmeshlocation.Normalize();
+
+				float CurrentLocationVectorSize = CurrentLocation.Size();
+				float staticmeshlocationVectorSize = staticmeshlocation.Size();
+
+				FVector RandomOffset = FVector(
+					FMath::RandRange(CurrentLocationVectorSize, staticmeshlocationVectorSize),
+					FMath::RandRange(CurrentLocationVectorSize, staticmeshlocationVectorSize),
+					FMath::RandRange(CurrentLocationVectorSize, staticmeshlocationVectorSize));
+
+
+				CollisionSphere->AddLocalOffset(FMath::Lerp(CurrentLocation, RandomOffset, Speed));
+			}
 		}
 	}
 }
