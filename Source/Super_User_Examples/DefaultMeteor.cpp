@@ -46,7 +46,7 @@ ADefaultMeteor::ADefaultMeteor()
 		"MaterialInstanceConstant'/Game/Material_Examples/M_MasterRockMaterial_Inst.M_MasterRockMaterial_Inst'"));
 	Material = asset.Object;
 	Mesh_1->SetMaterial(0, Material);
-
+Speed = 1;
 
 }
 
@@ -76,20 +76,20 @@ void ADefaultMeteor::BeginPlay()
 			const AStaticMeshActor* StaticMeshActor = Cast<AStaticMeshActor>(*Itr);
 			if (StaticMeshActor)
 				if (StaticMeshActor != GetActor())
-					if (StaticMeshActor->ActorHasTag("Floor_1"))
+					if (StaticMeshActor->GetRootComponent()->ComponentHasTag("Floor_1"))
 					{
 						//Print(StaticMeshActor->GetActorLocation().ToString(),FColor::Blue);
-						FVector direction = this->GetActorLocation();
-						FVector ImpLuseVector = (direction - StaticMeshActor->
-						                                     GetActorLocation());
-						direction.Normalize();
+						Direction = this->GetActorLocation();
+						FVector ImpLuseVector = (Direction - StaticMeshActor->
+						                                     GetActorLocation()) * Speed;
+						Direction.Normalize();
 						CollisionSphere->AddImpulse(ImpLuseVector, EName::None, true);
 
 						FRotator plusRotation = {0, 0, 360};
 						FRotator minusRotation = {0, 0, -360}; 
 						SetActorRotation(plusRotation);
 						AddActorLocalRotation(minusRotation);
-						CollisionSphere->AddLocalOffset(FMath::Lerp(direction,
+						CollisionSphere->AddLocalOffset(FMath::Lerp(Direction,
 						                                            StaticMeshActor->GetActorLocation(),
 						                                            .3f));
 					}

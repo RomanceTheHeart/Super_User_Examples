@@ -41,7 +41,7 @@ void AMiniProjects::BeginPlay()
 			SpawnedActor = GetWorld()->SpawnActor<ADefaultMeteor>(SpawnedActor_BP, newspawnvector, FRotator(0, 0, 0),
 			                                                SpawnParameters);
 
-			SpawnedActor->SetSpawnLocation(newspawnvector + SpawnedActor->GetActorLocation());
+		
 		}
 		Blockcounter++;
 	}
@@ -61,15 +61,10 @@ void AMiniProjects::BeginPlay()
 		SpawnedActor = GetWorld()->SpawnActor<ADefaultMeteor>(SpawnedActor_BP, newspawnvector_2,
 		                                                FRotator(0, 0, 0),
 		                                                SpawnParameters);
-		SpawnedActor->SetSpawnLocation(newspawnvector_2 + SpawnedActor->GetActorLocation());
+
 	}
-/*Debug::	Print("This is index_j: ", FColor::Red);
-	Print(FString::FromInt(Blockcounter), FColor::Red);
-	Print("Actor's Spawned.", FColor::Blue);*/
 
-	//---> GetLevel()->Actors;
-	//Create a SkyActor that is a sphere. Spawn Meteorite actors with-in bounds.
-
+SpawnedActor->RegisterAllComponents();
 
 	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AMiniProjects::DestroyActor, 10);
 }

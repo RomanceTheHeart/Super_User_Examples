@@ -32,41 +32,39 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh_1;
-
-	//TSharedPtr<UGeometryCollection> geometry_location;
+	
 
 	
-	UPROPERTY(VisibleAnywhere)
-	FVector SpawnLocation;
-	UPROPERTY()
-	FVector DestructionLocation;
-	//UPROPERTY(Transient)
-	//mutable TArray<FString> ActorsToCollide;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	FVector CurrentLocation {FVector::ZeroVector};
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	FVector Direction{FVector::ZeroVector};
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	float Speed{0.0f};
+	
+
 
 
 
 	
 public:
-	// Sets default values for this actor's properties
+	
 	ADefaultMeteor();
 	UPROPERTY()
 	UMaterialInterface* Material;
 
 	UPROPERTY()
 	UMaterialInstanceDynamic* Dissolve_Material;
-	FVector GetSpawnLocation() const { return SpawnLocation; }
-	void SetSpawnLocation(const FVector location) { SpawnLocation = location; }
+	FVector GetMeteorVector() const { return Direction; }
 	UFUNCTION(BlueprintCallable,Category ="Meteor Settings")
 	USphereComponent* GetRoot() { return CollisionSphere; }
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	//virtual void  NotifyHit(AActor* OtherActor) override;
 
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	AActor* GetActor() { return this; }
 };

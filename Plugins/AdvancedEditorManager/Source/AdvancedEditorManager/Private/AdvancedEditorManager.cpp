@@ -10,7 +10,6 @@
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "SlateWidgets/AdvancedDeletionWidget.h"
 
-
 #define LOCTEXT_NAMESPACE "FAdvancedEditorManagerModule"
 
 void FAdvancedEditorManagerModule::StartupModule()
