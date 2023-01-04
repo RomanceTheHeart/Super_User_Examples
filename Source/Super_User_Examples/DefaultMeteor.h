@@ -19,6 +19,10 @@ class SUPER_USER_EXAMPLES_API ADefaultMeteor : public AActor
 
 private:
 	UINT64 ImpulseVelocity{100};
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
+	UFieldSystemComponent* System;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* CollisionSphere;
 
@@ -28,11 +32,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
 	UGeometryCollectionComponent* ComponentCollection;
-
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meteor Settings", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* Mesh_1;
-
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	FVector CurrentLocation{FVector::ZeroVector};
@@ -53,6 +52,8 @@ public:
 	FVector GetMeteorVector() const { return Direction; }
 	UFUNCTION(BlueprintCallable, Category ="Meteor Settings")
 	USphereComponent* GetRoot() { return CollisionSphere; }
+
+	void ExplodeMeteorite();
 
 protected:
 	virtual void BeginPlay() override;

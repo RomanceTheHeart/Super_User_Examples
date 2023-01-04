@@ -25,28 +25,22 @@ ADefaultMeteor::ADefaultMeteor()
 	CollisionSphere->SetSphereRadius(150);
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 
-
+	System = CreateDefaultSubobject<UFieldSystemComponent>(TEXT("Field"));
 	SetRootComponent(CollisionSphere);
 	Collection = CreateDefaultSubobject<UGeometryCollection>(TEXT("Collection"));
 	ComponentCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("CollectionComponent"));
 	ComponentCollection->SetRestCollection(Collection);
+	ComponentCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic,ECR_Ignore);
+	ComponentCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic,ECR_Block);
+	ComponentCollection->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
+	ComponentCollection->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-	Mesh_1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootMeshComonent"));
-	auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(
-		TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
-	if (MeshAsset.Object != nullptr) { Mesh_1->SetStaticMesh(MeshAsset.Object); }
-	Mesh_1->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
-	Mesh_1->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform, EName::None);
-	Mesh_1->SetRelativeLocation(FVector::ZeroVector);
-	Mesh_1->SetRelativeRotation(FRotator::ZeroRotator);
+	
 
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> asset(TEXT(
-		"MaterialInstanceConstant'/Game/Material_Examples/M_MasterRockMaterial_Inst.M_MasterRockMaterial_Inst'"));
-	Material = asset.Object;
-	Mesh_1->SetMaterial(0, Material);
+
 
 	///Other Variable Intializations//
-	Speed = 1;
+	Speed = .3f;
 	FVector ImpLuseVector = (CurrentLocation + (Direction) * Speed);
 }
 
@@ -57,14 +51,9 @@ void ADefaultMeteor::BeginPlay()
 
 	CurrentLocation = CollisionSphere->GetComponentLocation();
 	CurrentLocation.Normalize();
-	//PrintLog(CollisionSphere->GetName());
 	CollisionSphere->SetSimulatePhysics(true);
-	Material = Mesh_1->GetMaterial(1);
-	Dissolve_Material = UMaterialInstanceDynamic::Create(Material, this);
-	if (Dissolve_Material != nullptr)
-	{
-		//Mesh_1->SetMaterial(0,Dissolve_Material);
-	}
+	
+
 
 
 	//////////Get Objects Around Me //////////
@@ -84,10 +73,6 @@ void ADefaultMeteor::BeginPlay()
 				if (GEngine)
 					GEngine->AddOnScreenDebugMessage(1, 300.0, FColor::Green,
 					                                 (TEXT("%s"), actor->GetName()));
-				if (GEngine)
-					GEngine->AddOnScreenDebugMessage(1, 300.0, FColor::Green,
-					                                 (TEXT("%d"), FString::FromInt(StaticMeshActors.Num())));
-
 
 				FVector staticmeshlocation = actor->GetActorLocation();
 				staticmeshlocation.Normalize();
@@ -102,8 +87,25 @@ void ADefaultMeteor::BeginPlay()
 
 
 				CollisionSphere->AddLocalOffset(FMath::Lerp(CurrentLocation, RandomOffset, Speed));
+				
 			}
+			ExplodeMeteorite();
 		}
+	
+	}
+}
+
+void ADefaultMeteor::ExplodeMeteorite()
+{
+	const TManagedArray<int32>& BoneMap = ComponentCollection->GetBoneMapArray();
+	const TManagedArray<FString>& boneNames = ComponentCollection->GetBoneNameArray();
+	
+	for(FString index : boneNames)
+	{
+		
+		//ComponentCollection->ApplyKinematicField(200000,CollisionSphere->GetComponentLocation());
+
+		
 	}
 }
 
